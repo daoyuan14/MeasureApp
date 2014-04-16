@@ -38,9 +38,9 @@ public class MainActivity extends ActionBarActivity {
 
         Tab tab;
         tab = actionBar.newTab()
-                           .setText(R.string.tab_measure)
-                           .setTabListener(new TabListener<MeasureFragment>(
-                                   this, "Measure", MeasureFragment.class));
+                       .setText(R.string.tab_measure)
+                       .setTabListener(new TabListener<MeasureFragment>(
+                               this, "Measure", MeasureFragment.class));
         actionBar.addTab(tab);
 
         tab = actionBar.newTab()
