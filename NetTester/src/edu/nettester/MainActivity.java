@@ -13,7 +13,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * Main Activity
@@ -75,12 +77,27 @@ public class MainActivity extends ActionBarActivity {
      * @author Daoyuan
      */
     public static class MeasureFragment extends Fragment {
+        private Button btn_test;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_measure, container, false);
+            
+            btn_test = (Button) rootView.findViewById(R.id.btn_test);
+            initButtons();
+            
             return rootView;
+        }
+        
+        private void initButtons() {
+            btn_test.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Prepare to test", Toast.LENGTH_LONG)
+                         .show();
+                }
+            });
         }
     }
     

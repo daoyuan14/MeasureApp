@@ -8,5 +8,7 @@
     <string name="tab_result">Result</string>
     <string name="hello_measure">Hello measure!</string>
     <string name="hello_result">Hello result!</string>
+    
+    <string name="btn_test">Begin Test</string>
 
 </resources>
