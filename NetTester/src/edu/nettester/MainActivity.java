@@ -46,11 +46,6 @@ public class MainActivity extends ActionBarActivity {
                        .setTabListener(new TabListener<ResultFragment>(
                                this, "Result", ResultFragment.class));
         actionBar.addTab(tab);
-
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new PlaceholderFragment()).commit();
-//        }
     }
 
     @Override
@@ -72,19 +67,6 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
         }
     }
     
