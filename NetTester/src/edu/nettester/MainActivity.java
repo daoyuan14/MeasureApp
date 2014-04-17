@@ -1,5 +1,7 @@
 package edu.nettester;
 
+import edu.nettester.task.RTTTask;
+
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -15,10 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Main Activity
+ * Main UI Activity
+ * 
  * @author Daoyuan
  */
 public class MainActivity extends ActionBarActivity {
@@ -94,8 +98,10 @@ public class MainActivity extends ActionBarActivity {
             btn_test.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Prepare to test", Toast.LENGTH_LONG)
+                    Toast.makeText(getActivity(), "Prepare to test", Toast.LENGTH_SHORT)
                          .show();
+                    
+                    new RTTTask(getActivity()).execute();
                 }
             });
         }
@@ -106,13 +112,40 @@ public class MainActivity extends ActionBarActivity {
      * @author Daoyuan
      */
     public static class ResultFragment extends Fragment {
+        private TextView text_result;
+        private Button btn_display;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_result, container, false);
+            
+            text_result = (TextView) rootView.findViewById(R.id.text_result);
+            btn_display = (Button) rootView.findViewById(R.id.btn_display);
+            initButtons();
+            
             return rootView;
         }
+        
+        private void initButtons() {
+            btn_display.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Prepare to output", Toast.LENGTH_SHORT)
+                         .show();
+                    
+                    new DisplayResult(getActivity()).execute(text_result);
+                }
+            });
+        }
+
+//        @Override
+//        public void onResume() {
+//            super.onResume();
+//            
+//            new DisplayResult(getActivity()).execute(text_result);
+//        }
+        
     }
     
     /**

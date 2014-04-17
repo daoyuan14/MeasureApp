@@ -9,8 +9,21 @@
     tools:context="edu.nettester.MainActivity$ResultFragment" >
 
     <TextView
+        android:id="@+id/text_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="74dp"
         android:text="@string/hello_result" />
+
+    <Button
+        android:id="@+id/btn_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/text_result"
+        android:layout_marginBottom="150dp"
+        android:text="Button" />
 
 </RelativeLayout>
