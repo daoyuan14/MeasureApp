@@ -48,15 +48,17 @@ public class DisplayResult extends AsyncTask<Void, Void, String> implements Cons
         
         String result = "";
         
-        for (cur.moveToFirst(); cur.moveToNext(); ) {
-            String mid = cur.getString(cur.getColumnIndex(MeasureLog.COLUMN_NAME_MID));
-            String timestamp = cur.getString(cur.getColumnIndex(MeasureLog.COLUMN_NAME_TIME));
-            String rtt = cur.getString(cur.getColumnIndex(MeasureLog.COLUMN_NAME_RTT));
-            
-            result += mid + ", ";
-            result += timestamp + ", ";
-            result += rtt + ", ";
-            result += "\n";
+        if (cur.moveToFirst()) {
+            do {
+                String mid = cur.getString(cur.getColumnIndex(MeasureLog.COLUMN_NAME_MID));
+                String timestamp = cur.getString(cur.getColumnIndex(MeasureLog.COLUMN_NAME_TIME));
+                String rtt = cur.getString(cur.getColumnIndex(MeasureLog.COLUMN_NAME_RTT));
+                
+                result += mid + ", ";
+                result += timestamp + ", ";
+                result += rtt + ", ";
+                result += "\n";
+            } while (cur.moveToNext());
         }
         cur.close();
         
