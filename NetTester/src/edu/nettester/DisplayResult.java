@@ -11,16 +11,18 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
-public class DisplayResult extends AsyncTask<TextView, Void, Void> implements Constant {
+public class DisplayResult extends AsyncTask<Void, Void, String> implements Constant {
     
     private Context mContext;
+    private TextView mView;
     
-    public DisplayResult(Context context) {
+    public DisplayResult(Context context, TextView view) {
         mContext = context;
+        mView = view;
     }
 
     @Override
-    protected Void doInBackground(TextView... views) {
+    protected String doInBackground(Void... params) {
         if (DEBUG)
             Log.d(TAG, "Enter doInBackground in DisplayResult");
         
@@ -51,9 +53,9 @@ public class DisplayResult extends AsyncTask<TextView, Void, Void> implements Co
             String timestamp = cur.getString(cur.getColumnIndex(MeasureLog.COLUMN_NAME_TIME));
             String rtt = cur.getString(cur.getColumnIndex(MeasureLog.COLUMN_NAME_RTT));
             
-            result += mid;
-            result += timestamp;
-            result += rtt;
+            result += mid + ", ";
+            result += timestamp + ", ";
+            result += rtt + ", ";
             result += "\n";
         }
         cur.close();
@@ -61,9 +63,12 @@ public class DisplayResult extends AsyncTask<TextView, Void, Void> implements Co
         if (DEBUG)
             Log.d(TAG, result);
         
-        views[0].setText(result);
-        
-        return null;
+        return result;
     }
 
+    @Override
+    protected void onPostExecute(String result) {
+        // View cannot be accessible in doInBackground()
+        mView.setText(result);
+    }
 }

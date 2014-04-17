@@ -122,29 +122,29 @@ public class MainActivity extends ActionBarActivity {
             
             text_result = (TextView) rootView.findViewById(R.id.text_result);
             btn_display = (Button) rootView.findViewById(R.id.btn_display);
-            initButtons();
+            //initButtons();
             
             return rootView;
         }
         
-        private void initButtons() {
-            btn_display.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Prepare to output", Toast.LENGTH_SHORT)
-                         .show();
-                    
-                    new DisplayResult(getActivity()).execute(text_result);
-                }
-            });
-        }
-
-//        @Override
-//        public void onResume() {
-//            super.onResume();
-//            
-//            new DisplayResult(getActivity()).execute(text_result);
+//        private void initButtons() {
+//            btn_display.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(getActivity(), "Prepare to output", Toast.LENGTH_SHORT)
+//                         .show();
+//                    
+//                    new DisplayResult(getActivity(), text_result).execute();
+//                }
+//            });
 //        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            
+            new DisplayResult(getActivity(), text_result).execute();
+        }
         
     }
     
