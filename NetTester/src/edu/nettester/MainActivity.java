@@ -16,9 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Main UI Activity
@@ -82,6 +88,7 @@ public class MainActivity extends ActionBarActivity {
      */
     public static class MeasureFragment extends Fragment {
         private Button btn_test;
+        private Spinner spinner;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,9 +96,42 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_measure, container, false);
             
             btn_test = (Button) rootView.findViewById(R.id.btn_test);
+            spinner = (Spinner) rootView.findViewById(R.id.spinner);
+            
             initButtons();
+            initSpinner();
             
             return rootView;
+        }
+        
+        private void initSpinner() {
+            ArrayList<String> arrayList1 = new ArrayList<String>();
+            arrayList1.add("HK1");
+            arrayList1.add("US1");
+            arrayList1.add("China1");
+            
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<String> adapter = new ArrayAdapter<String> (
+                    getActivity(), android.R.layout.simple_spinner_dropdown_item, arrayList1);
+            
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            
+            // Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+            
+            spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> parent, View view, 
+                        int position, long id) {
+                    String target = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(getActivity(), target, Toast.LENGTH_SHORT)
+                         .show();
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Another interface callback
+                }
+            });
         }
         
         private void initButtons() {
