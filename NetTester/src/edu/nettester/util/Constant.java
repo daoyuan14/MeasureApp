@@ -11,6 +11,8 @@ public interface Constant {
     
     public static final String ServerListName = "serverlist.txt";
     
+    public static final String selectedTab = "selectedTabIndex";
+    
     public static HashMap<String, String> servermap = new LinkedHashMap<String, String>();
 
 }

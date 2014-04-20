@@ -41,20 +41,25 @@ public class MainActivity extends ActionBarActivity implements Constant {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (DEBUG)
+            Log.d(TAG, "enter MainActivity: onCreate");
         super.onCreate(savedInstanceState);
         
         // Notice that setContentView() is not used, because we use the root
         // android.R.id.content as the container for each fragment
+        // see ft.add(android.R.id.content, mFragment, mTag);
         //setContentView(R.layout.activity_main);
         
-        // init server list
-        AssetManager am = getAssets();
-        try {
-            InputStream is = am.open(ServerListName);
-            CommonMethod.readServerList(is);
-            is.close();
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
+         // init server list
+        if (savedInstanceState == null) {
+            AssetManager am = getAssets();
+            try {
+                InputStream is = am.open(ServerListName);
+                CommonMethod.readServerList(is);
+                is.close();
+            } catch (IOException e) {
+                Log.e(TAG, e.toString());
+            }
         }
         
         // setup action bar for tabs
@@ -62,18 +67,26 @@ public class MainActivity extends ActionBarActivity implements Constant {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowTitleEnabled(true);
 
-        Tab tab;
-        tab = actionBar.newTab()
+        Tab tab1, tab2;
+        tab1 = actionBar.newTab()
                        .setText(R.string.tab_measure)
                        .setTabListener(new TabListener<MeasureFragment>(
                                this, "Measure", MeasureFragment.class));
-        actionBar.addTab(tab);
-
-        tab = actionBar.newTab()
+        tab2 = actionBar.newTab()
                        .setText(R.string.tab_result)
                        .setTabListener(new TabListener<ResultFragment>(
                                this, "Result", ResultFragment.class));
-        actionBar.addTab(tab);
+        
+        if (savedInstanceState == null) {
+            actionBar.addTab(tab1);
+            actionBar.addTab(tab2);
+        } else {
+            actionBar.addTab(tab1, false);
+            actionBar.addTab(tab2, false);
+        }
+        
+        if (DEBUG)
+            Log.d(TAG, "exit MainActivity: onCreate");
     }
 
     @Override
@@ -98,6 +111,34 @@ public class MainActivity extends ActionBarActivity implements Constant {
         }
     }
     
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (DEBUG)
+            Log.d(TAG, "enter MainActivity: onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+        
+        int i = getSupportActionBar().getSelectedNavigationIndex();
+        outState.putInt(selectedTab, i);
+        
+        if (DEBUG)
+            Log.d(TAG, "exit MainActivity: onSaveInstanceState");
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (DEBUG)
+            Log.d(TAG, "enter MainActivity: onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
+        
+        if (savedInstanceState != null) {
+            int index = savedInstanceState.getInt(selectedTab);
+            getSupportActionBar().setSelectedNavigationItem(index);
+        }
+        
+        if (DEBUG)
+            Log.d(TAG, "exit MainActivity: onRestoreInstanceState");
+    }
+    
     /**
      * A fragment for measure tab
      * @author Daoyuan
@@ -109,6 +150,8 @@ public class MainActivity extends ActionBarActivity implements Constant {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+            super.onCreateView(inflater, container, savedInstanceState);
+            
             View rootView = inflater.inflate(R.layout.fragment_measure, container, false);
             
             btn_test = (Button) rootView.findViewById(R.id.btn_test);
@@ -118,6 +161,11 @@ public class MainActivity extends ActionBarActivity implements Constant {
             initSpinner();
             
             return rootView;
+        }
+        
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            super.onSaveInstanceState(outState);
         }
         
         private void initSpinner() {
@@ -171,6 +219,8 @@ public class MainActivity extends ActionBarActivity implements Constant {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+            super.onCreateView(inflater, container, savedInstanceState);
+            
             View rootView = inflater.inflate(R.layout.fragment_result, container, false);
             
             text_result = (TextView) rootView.findViewById(R.id.text_result);
@@ -178,6 +228,11 @@ public class MainActivity extends ActionBarActivity implements Constant {
             //initButtons();
             
             return rootView;
+        }
+        
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            super.onSaveInstanceState(outState);
         }
         
 //        private void initButtons() {
@@ -224,12 +279,12 @@ public class MainActivity extends ActionBarActivity implements Constant {
        }
 
         @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        public void onTabSelected(Tab tab, FragmentTransaction ft) {            
             // Check if the fragment is already initialized
             if (mFragment == null) {
                 // If not, instantiate and add it to the activity
                 mFragment = Fragment.instantiate(mActivity, mClass.getName());
-                ft.add(android.R.id.content, mFragment, mTag);
+                ft.replace(android.R.id.content, mFragment, mTag); //http://code.google.com/p/android/issues/detail?id=58602#c30
             } else {
                 // If it exists, simply attach it in order to show it
                 ft.attach(mFragment);
@@ -242,6 +297,24 @@ public class MainActivity extends ActionBarActivity implements Constant {
                 // Detach the fragment, because another one is being attached
                 ft.detach(mFragment);
             }
+            
+//            /*
+//             * [WARN] not this issue
+//             * temporary fix provided by https://code.google.com/p/android/issues/detail?id=58602#c8
+//             */
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                try {
+//                    Method commit = tab.getClass().getDeclaredMethod("commitActiveTransaction");
+//                    commit.setAccessible(true);
+//                    commit.invoke(tab);
+//                    
+//                } catch (RuntimeException e) {
+//                    throw e;
+//                    
+//                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
         }
         
         @Override
