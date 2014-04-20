@@ -1,5 +1,7 @@
 package edu.nettester.task;
 
+import edu.nettester.util.Constant;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -13,13 +15,12 @@ import android.util.Log;
  * @author Weichao
  * @since 14-04-20
  */
-public class HTTPPinger {
+public class HTTPPinger implements Constant {
 	private String mserver = "";
-	private String OUTAG = "NetTester";
 	
-	public void init(String in_server) {
-		this.mserver = in_server;
-	}
+	public HTTPPinger(String mserver) {
+        this.mserver = mserver;
+    }
 	
 	public float execute() {
 		float rtt = 0;
@@ -49,12 +50,12 @@ public class HTTPPinger {
 					TimeUnit.MILLISECONDS.sleep(200);
 					resp_code = 0;
 				} catch (InterruptedException e){
-					Log.e(OUTAG, e.getMessage());
+					Log.e(TAG, e.getMessage());
 				}
 			}
 			httpconn.disconnect();
 		} catch (Exception e) {  
-            Log.e(OUTAG, e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
 		return rtt;
 	}

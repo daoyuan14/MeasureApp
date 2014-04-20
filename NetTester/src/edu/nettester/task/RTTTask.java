@@ -25,7 +25,6 @@ public class RTTTask extends AsyncTask<Void, Integer, String> implements Constan
     
     private Context mContext;
     //private AndroidHttpClient httpClient = null;
-    String OUTAG = "NetTester";
     
     public RTTTask(Context context) {
         mContext = context;
@@ -60,10 +59,10 @@ public class RTTTask extends AsyncTask<Void, Integer, String> implements Constan
         float stdv_rtt = getStdDv(rtt_list);*/
         
         //perform download throughput test
-        HTTPDownTP downtask = new HTTPDownTP();
-        downtask.init(mserver);
+        HTTPDownTP downtask = new HTTPDownTP(mserver);
         float tp = downtask.execute();
-        Log.d(OUTAG,String.valueOf(tp));
+        if (DEBUG)
+            Log.d(TAG, String.valueOf(tp));
         
         return String.valueOf(tp);
     }

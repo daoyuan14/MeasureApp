@@ -1,5 +1,7 @@
 package edu.nettester.task;
 
+import edu.nettester.util.Constant;
+
 import java.io.BufferedInputStream;
 import java.util.concurrent.TimeUnit;
 
@@ -16,12 +18,11 @@ import android.util.Log;
  * @author Weichao
  * @since 14-04-20
  */
-public class HTTPDownTP {
+public class HTTPDownTP implements Constant {
 	private String mserver = "";
-	private String OUTAG = "NetTester"; 
     private int do_size[] = {350,500,750,1000,1500,2000,2500,3000,3500,4000};
 	
-	public void init(String in_server) {
+    public HTTPDownTP(String in_server) {
 		this.mserver = in_server;
 	}
 	
@@ -71,7 +72,8 @@ public class HTTPDownTP {
 						long endTime = System.nanoTime();
 						
 						float duration = (endTime-startTime)/1000000;
-						Log.d(OUTAG, String.valueOf(downsize)+":"+String.valueOf(have_read)+":"+String.valueOf(duration));
+						if (DEBUG)
+						    Log.d(TAG, String.valueOf(downsize)+":"+String.valueOf(have_read)+":"+String.valueOf(duration));
 						tp = (have_read*8)/duration;
 						
 						if(duration > 10000) {
@@ -79,16 +81,16 @@ public class HTTPDownTP {
 						}
 						TimeUnit.MILLISECONDS.sleep(200);
 					} catch (InterruptedException e){
-						Log.e(OUTAG, e.getMessage());
+						Log.e(TAG, e.getMessage());
 					}
 				} else {
-					Log.d(OUTAG, "download failed");
+					Log.w(TAG, "download failed");
 				}
 				client.close();
 			}
 			
 		} catch (Exception e) {  
-            Log.e(OUTAG, e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
 		
 		return tp;
