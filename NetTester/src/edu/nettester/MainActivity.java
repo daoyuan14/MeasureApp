@@ -297,24 +297,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
                 // Detach the fragment, because another one is being attached
                 ft.detach(mFragment);
             }
-            
-//            /*
-//             * [WARN] not this issue
-//             * temporary fix provided by https://code.google.com/p/android/issues/detail?id=58602#c8
-//             */
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//                try {
-//                    Method commit = tab.getClass().getDeclaredMethod("commitActiveTransaction");
-//                    commit.setAccessible(true);
-//                    commit.invoke(tab);
-//                    
-//                } catch (RuntimeException e) {
-//                    throw e;
-//                    
-//                } catch (Exception e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
         }
         
         @Override
