@@ -1,6 +1,7 @@
 package edu.nettester;
 
 import edu.nettester.task.RTTTask;
+import edu.nettester.util.Constant;
 
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
  * 
  * @author Daoyuan
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements Constant {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,14 @@ public class MainActivity extends ActionBarActivity {
         // Notice that setContentView() is not used, because we use the root
         // android.R.id.content as the container for each fragment
         //setContentView(R.layout.activity_main);
+        
+        // init server list
+        servermap.put("Hong Kong Server1", "http://www.suntechspeedtest.com/speedtest/");
+        servermap.put("China Server1", "http://sp1.szunicom.info/speedtest/");
+        servermap.put("Taiwan Server1", "http://sptkh1.tfn.net.tw/speedtest/");
+        servermap.put("US Server1", "http://speedtest.n.bli.openaccess.org/speedtest/");
+        servermap.put("Germany Server1", "http://speedtest.com-in.net/mini/speedtest/");
+        servermap.put("France Server1", "http://speedtest.sfrbusinessteam.fr/speedtest/");
         
         // setup action bar for tabs
         ActionBar actionBar = getSupportActionBar();
@@ -105,10 +114,7 @@ public class MainActivity extends ActionBarActivity {
         }
         
         private void initSpinner() {
-            ArrayList<String> arrayList1 = new ArrayList<String>();
-            arrayList1.add("HK1");
-            arrayList1.add("US1");
-            arrayList1.add("China1");
+            ArrayList<String> arrayList1 = new ArrayList<String>(servermap.keySet());
             
             // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<String> adapter = new ArrayAdapter<String> (
@@ -124,7 +130,7 @@ public class MainActivity extends ActionBarActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, 
                         int position, long id) {
                     String target = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getActivity(), target, Toast.LENGTH_SHORT)
+                    Toast.makeText(getActivity(), servermap.get(target), Toast.LENGTH_SHORT)
                          .show();
                 }
 

@@ -1,0 +1,6 @@
+Hong Kong Server1	http://www.suntechspeedtest.com/speedtest/
+China Server1	http://sp1.szunicom.info/speedtest/
+Taiwan Server1	http://sptkh1.tfn.net.tw/speedtest/
+US Server1	http://speedtest.n.bli.openaccess.org/speedtest/
+Germany Server1	http://speedtest.com-in.net/mini/speedtest/
+France Server1	http://speedtest.sfrbusinessteam.fr/speedtest/
