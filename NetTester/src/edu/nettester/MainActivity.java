@@ -1,6 +1,7 @@
 package edu.nettester;
 
 import edu.nettester.task.RTTTask;
+import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
 
 import android.support.v7.app.ActionBar.Tab;
@@ -9,7 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +28,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -43,12 +48,14 @@ public class MainActivity extends ActionBarActivity implements Constant {
         //setContentView(R.layout.activity_main);
         
         // init server list
-        servermap.put("Hong Kong Server1", "http://www.suntechspeedtest.com/speedtest/");
-        servermap.put("China Server1", "http://sp1.szunicom.info/speedtest/");
-        servermap.put("Taiwan Server1", "http://sptkh1.tfn.net.tw/speedtest/");
-        servermap.put("US Server1", "http://speedtest.n.bli.openaccess.org/speedtest/");
-        servermap.put("Germany Server1", "http://speedtest.com-in.net/mini/speedtest/");
-        servermap.put("France Server1", "http://speedtest.sfrbusinessteam.fr/speedtest/");
+        AssetManager am = getAssets();
+        try {
+            InputStream is = am.open(ServerListName);
+            CommonMethod.readServerList(is);
+            is.close();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
         
         // setup action bar for tabs
         ActionBar actionBar = getSupportActionBar();
