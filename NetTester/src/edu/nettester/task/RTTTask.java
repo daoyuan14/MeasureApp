@@ -21,7 +21,7 @@ import android.util.Log;
  * 
  * @author Daoyuan and Weichao
  */
-public class RTTTask extends AsyncTask<Void, Integer, String> implements Constant {
+public class RTTTask extends AsyncTask<String, Integer, String[]> implements Constant {
     
     private Context mContext;
     //private AndroidHttpClient httpClient = null;
@@ -31,9 +31,10 @@ public class RTTTask extends AsyncTask<Void, Integer, String> implements Constan
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected String[] doInBackground(String... params) {
         //for test only
-    	String mserver = "http://sp1.szunicom.info/speedtest/";
+    	String target = params[0];
+    	String mserver = servermap.get(target);
     	
     	String up_url = mserver+"upload.php";
         
@@ -64,7 +65,7 @@ public class RTTTask extends AsyncTask<Void, Integer, String> implements Constan
         if (DEBUG)
             Log.d(TAG, String.valueOf(tp));
         
-        return String.valueOf(tp);
+        return new String[] {String.valueOf(tp), mserver};
     }
 
     /**
@@ -79,15 +80,15 @@ public class RTTTask extends AsyncTask<Void, Integer, String> implements Constan
      * insert into DB
      */
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(String[] result) {
         MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         
         // TODO insert some fake data
         ContentValues values = new ContentValues();
         values.put(MeasureLog.COLUMN_NAME_MID, "1234567890");
-        values.put(MeasureLog.COLUMN_NAME_TIME, "Apr 16");
-        values.put(MeasureLog.COLUMN_NAME_RTT, "128");
+        values.put(MeasureLog.COLUMN_NAME_TIME, result[1]);
+        values.put(MeasureLog.COLUMN_NAME_RTT, result[0]);
         
         long newRowId;
         newRowId = db.insert(

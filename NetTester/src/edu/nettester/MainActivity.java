@@ -146,6 +146,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
     public static class MeasureFragment extends Fragment {
         private Button btn_test;
         private Spinner spinner;
+        private String target = null;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -184,7 +185,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
             spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent, View view, 
                         int position, long id) {
-                    String target = parent.getItemAtPosition(position).toString();
+                    target = parent.getItemAtPosition(position).toString();
                     Toast.makeText(getActivity(), servermap.get(target), Toast.LENGTH_SHORT)
                          .show();
                 }
@@ -202,7 +203,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     Toast.makeText(getActivity(), "Prepare to test", Toast.LENGTH_SHORT)
                          .show();
                     
-                    new RTTTask(getActivity()).execute();
+                    new RTTTask(getActivity()).execute(target);
                 }
             });
         }
