@@ -122,7 +122,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
     private void openSettingsActivity() {
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
-        finish();
     }
     
     @Override

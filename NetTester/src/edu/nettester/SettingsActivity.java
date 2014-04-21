@@ -2,6 +2,8 @@ package edu.nettester;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
@@ -34,11 +36,8 @@ public class SettingsActivity extends ActionBarActivity {
             
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                openMainActivity();
-                return true;
-                
-                /*
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
+                upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP); //need to still have the same state on the main activity
                 
                 if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                     // This activity is NOT part of this app's task, so create a new task
@@ -54,20 +53,10 @@ public class SettingsActivity extends ActionBarActivity {
                     NavUtils.navigateUpTo(this, upIntent);
                 }
                 return true;
-                */
                 
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-    
-    /**
-     * jump to SettingsActivity
-     */
-    private void openMainActivity() {
-        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
 }
