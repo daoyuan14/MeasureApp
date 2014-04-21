@@ -38,6 +38,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.nettester.MainActivity" />
         </activity>
+        
+        <!-- A child of the setting activity -->
+        <activity
+            android:name="edu.nettester.LoginActivity"
+            android:label="@string/login_ui_title"
+            android:parentActivityName="edu.nettester.SettingsActivity" >
+            <!-- Parent activity meta-data to support API level 7+ -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.nettester.SettingsActivity" />
+        </activity>
 
     </application>
 

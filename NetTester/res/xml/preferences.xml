@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:key="pref_login"
-        android:title="@string/pref_loginTitle"
-        android:dialogTitle="@string/pref_loginTitle"
-        android:defaultValue="@string/pref_login_default" />
+    <PreferenceCategory
+        android:title="@string/pref_login_title"
+        android:key="pref_login_settings">
+        <Preference 
+            android:key="pref_login_view"
+            android:title="@string/pref_login_view_title"
+            android:summary="@string/pref_login_view_default" >
+            <intent android:targetClass="edu.nettester.LoginActivity"
+            		android:targetPackage="edu.nettester" />
+        </Preference>
+        <Preference 
+            android:key="pref_login_username"
+            android:title="@string/pref_login_username_title"
+            android:summary="@string/pref_login_username_default" />
+    </PreferenceCategory>
 </PreferenceScreen>

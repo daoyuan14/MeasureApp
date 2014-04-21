@@ -12,7 +12,12 @@
     
     <string name="btn_test">Begin Test</string>
     
-    <string name="pref_loginTitle">Login Setting</string>
-    <string name="pref_login_default">Anonymous</string>
+    <string name="login_ui_title">NetTester Login</string>
+    
+    <string name="pref_login_title">Login Setting</string>
+    <string name="pref_login_view_title">Login account</string>
+    <string name="pref_login_view_default">Click to login your NetTester account</string>
+    <string name="pref_login_username_title">Your user name</string>
+    <string name="pref_login_username_default">Anonymous</string>
 
 </resources>
