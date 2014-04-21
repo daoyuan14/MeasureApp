@@ -30,9 +30,10 @@ public class HTTPUpTP implements Constant {
 		boolean success = false;
 		
 		try {
-			String p = prepare_str(250000);
 			String up_url = this.mserver+"upload.php";
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Dalvik/1.6.0 NetTester of OneProbe Group");
+			
+			String p = prepare_str(250000);
 			
 			for(int i=0;i<6;i++) {
 				int statusCode = 0;
@@ -93,7 +94,8 @@ public class HTTPUpTP implements Constant {
 					Log.w(TAG, "download failed");
 				}
 				httppost.abort();
-	            p+=p;
+				
+				p = generateNewStr(p, 2^(i+1));
 			}
 			
             
@@ -112,4 +114,20 @@ public class HTTPUpTP implements Constant {
         }
         return stringbuilder.toString();
     }
+	
+	/**
+	 * 
+	 * @param basestr
+	 * @param num Multiple number
+	 * @return
+	 */
+	private String generateNewStr(String basestr, int num) {
+	    int strlen = num * basestr.length();
+	    StringBuilder sb = new StringBuilder(strlen);
+	    
+	    for (int i = 0; i < num; i++)
+	        sb.append(basestr);
+	    
+	    return sb.toString();
+	}
 }
