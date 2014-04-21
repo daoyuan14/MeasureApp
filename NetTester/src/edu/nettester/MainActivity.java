@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -108,10 +109,20 @@ public class MainActivity extends ActionBarActivity implements Constant {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
+                openSettingsActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    /**
+     * jump to SettingsActivity
+     */
+    private void openSettingsActivity() {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+        finish();
     }
     
     @Override

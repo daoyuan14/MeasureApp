@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="pref_login"
+        android:title="@string/pref_loginTitle"
+        android:dialogTitle="@string/pref_loginTitle"
+        android:defaultValue="@string/pref_login_default" />
+</PreferenceScreen>
