@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/pref_login_title"
-        android:key="pref_login_settings">
+        android:key="pref_login"
+        android:title="@string/pref_login_title">
         <Preference 
             android:key="pref_login_view"
             android:title="@string/pref_login_view_title"
@@ -14,5 +14,31 @@
             android:key="pref_login_username"
             android:title="@string/pref_login_username_title"
             android:summary="@string/pref_login_username_default" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:key="pref_server"
+        android:title="@string/pref_server_title">
+        <Preference
+            android:key="pref_server_dialog"
+            android:title="@string/pref_server_dialog_title"
+            android:summary="@string/pref_server_dialog_summary" />
+        <Preference 
+            android:key="pref_server_last"
+            android:title="@string/pref_server_last_title"
+            android:summary="@string/pref_server_last_summary" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:key="pref_about"
+        android:title="@string/pref_about_title">
+        <Preference 
+            android:key="pref_about_intro"
+            android:title="@string/pref_about_intro_title"
+            android:summary="@string/pref_about_intro_summary" />
+        <Preference 
+            android:key="pref_about_version"
+            android:title="@string/pref_about_version_title"
+            android:summary="@string/pref_about_version_summary" />
     </PreferenceCategory>
 </PreferenceScreen>
