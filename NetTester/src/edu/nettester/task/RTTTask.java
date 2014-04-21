@@ -12,7 +12,11 @@ import edu.nettester.util.Constant;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-//import android.net.http.AndroidHttpClient;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -36,16 +40,14 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     	String target = params[0];
     	String mserver = servermap.get(target);
     	
-    	String up_url = mserver+"upload.php";
-        
-        
-        
+    	String mid = String.valueOf(System.currentTimeMillis());
+    	String mnetwork = getNetworkType(mContext);
+    	String mlocation = getLocation(mContext);
+    	    	
         //perform ping task
-    	/*
         ArrayList<Float> rtt_list = new ArrayList<Float>();
         for(int i=0;i<10;i++) {
-        	HTTPPinger pingtask = new HTTPPinger();
-        	pingtask.init(mserver);
+        	HTTPPinger pingtask = new HTTPPinger(mserver);
         	float rtt = pingtask.execute();
         	rtt_list.add(rtt);
         	
@@ -57,15 +59,28 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         float max_rtt = rtt_list.get(9);        
         float avg_rtt = getAverage(rtt_list);
         float median_rtt = getMedian(rtt_list);
-        float stdv_rtt = getStdDv(rtt_list);*/
+        float stdv_rtt = getStdDv(rtt_list);
         
         //perform download throughput test
         HTTPDownTP downtask = new HTTPDownTP(mserver);
-        float tp = downtask.execute();
-        if (DEBUG)
-            Log.d(TAG, String.valueOf(tp));
+        float downtp = downtask.execute();
+        //update progress
         
-        return new String[] {String.valueOf(tp), mserver};
+    	//perform upload throughput test
+    	HTTPUpTP uptask = new HTTPUpTP(mserver);
+    	float uptp = uptask.execute();
+    	//update progress
+    	
+    	if (DEBUG) {
+    		Log.d(TAG, "RTT: "+String.valueOf(median_rtt)+"ms");
+    		Log.d(TAG, "Down TP: "+String.valueOf(downtp)+"kbps");
+    		Log.d(TAG, "Up TP: "+String.valueOf(uptp)+"kbps");
+    	}
+    		
+        
+        return new String[] {mid, mnetwork, mlocation, mserver, String.valueOf(avg_rtt), 
+        		String.valueOf(median_rtt), String.valueOf(min_rtt), String.valueOf(max_rtt), 
+        		String.valueOf(stdv_rtt), String.valueOf(downtp), String.valueOf(uptp)};
     }
 
     /**
@@ -86,9 +101,17 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         
         // TODO insert some fake data
         ContentValues values = new ContentValues();
-        values.put(MeasureLog.COLUMN_NAME_MID, "1234567890");
-        values.put(MeasureLog.COLUMN_NAME_TIME, result[1]);
-        values.put(MeasureLog.COLUMN_NAME_RTT, result[0]);
+        values.put(MeasureLog.MID, result[0]);
+        values.put(MeasureLog.M_NET_INFO, result[1]);
+        values.put(MeasureLog.M_LOC_INFO, result[2]);
+        values.put(MeasureLog.M_TAR_SERVER, result[3]);
+        values.put(MeasureLog.AVG_RTT, result[4]);
+        values.put(MeasureLog.MEDIAN_RTT, result[5]);
+        values.put(MeasureLog.MIN_RTT, result[6]);
+        values.put(MeasureLog.MAX_RTT, result[7]);
+        values.put(MeasureLog.STDV_RTT, result[8]);
+        values.put(MeasureLog.DOWN_TP, result[9]);
+        values.put(MeasureLog.UP_TP, result[10]);
         
         long newRowId;
         newRowId = db.insert(
@@ -97,7 +120,9 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
                 values);
         if (DEBUG)
             Log.d(TAG, "Insert a db row: "+newRowId);
-        	
+        
+        //upload data
+        
     }
     
     
@@ -139,5 +164,39 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     	
     	return outval;
     }
-
+    
+    private String getNetworkType(Context mContext){
+        ConnectivityManager connManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkinfo = connManager.getActiveNetworkInfo();  
+        String networkType = "";  
+        if(networkinfo != null) {
+        	networkType = networkinfo.getTypeName();              
+        }
+        if (DEBUG)
+        	Log.d(TAG, "Network type:" + networkType);
+        return networkType;  
+    }
+    
+    private String getLocation(Context mContext) {
+		String outloc = "";
+		
+		LocationManager lm = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
+		Criteria criteria = new Criteria(); 
+		criteria.setCostAllowed(false);
+		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+		String providerName = lm.getBestProvider(criteria, true);
+		
+		if (providerName != null) {
+			Location location = lm.getLastKnownLocation(providerName);
+            Log.i(TAG, "-------"+location);
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            outloc = String.valueOf(longitude) + "," + String.valueOf(latitude);
+        } else {
+        	outloc = "Unknow place";
+        }
+		if (DEBUG)
+        	Log.d(TAG, "Location:" + outloc);
+		return outloc;
+	}
 }

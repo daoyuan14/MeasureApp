@@ -21,9 +21,18 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_MLOG =
         "CREATE TABLE " + MeasureLog.TABLE_NAME + " (" +
         MeasureLog._ID + " INTEGER PRIMARY KEY," +
-        MeasureLog.COLUMN_NAME_MID + TEXT_TYPE + COMMA_SEP +
-        MeasureLog.COLUMN_NAME_TIME + TEXT_TYPE + COMMA_SEP +
-        MeasureLog.COLUMN_NAME_RTT + TEXT_TYPE +
+        MeasureLog.MUSER + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.MID + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.M_NET_INFO + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.M_LOC_INFO + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.M_TAR_SERVER + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.AVG_RTT + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.MEDIAN_RTT + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.MIN_RTT + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.MAX_RTT + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.STDV_RTT + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.DOWN_TP + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.UP_TP + TEXT_TYPE +
         " )";
         
     private static final String SQL_DELETE_MLOG =
@@ -44,7 +53,7 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_MLOG);
         onCreate(db);
     }
-    
+
     public Cursor fetchAllLogs() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cur = db.query(

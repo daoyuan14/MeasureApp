@@ -241,8 +241,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
         private void initListView() {
             mDbHelper = new MeasureDBHelper(getActivity());
             Cursor cursor = mDbHelper.fetchAllLogs();
-            String[] fromColumns = {MeasureLog.COLUMN_NAME_MID, 
-                    MeasureLog.COLUMN_NAME_TIME, MeasureLog.COLUMN_NAME_RTT};
+            String[] fromColumns = {MeasureLog.COLUMN_NAME_MID, MeasureLog.DOWN_TP, MeasureLog.AVG_RTT};
             //int[] toViews = {R.id.mlog_mid, R.id.mlog_time, R.id.mlog_rtt};
             int[] toViews = {R.id.text1, R.id.text2, R.id.text3};
             

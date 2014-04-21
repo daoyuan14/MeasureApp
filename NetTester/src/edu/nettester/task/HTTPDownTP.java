@@ -32,8 +32,8 @@ public class HTTPDownTP implements Constant {
 		boolean success = false;
 		
 		try {
+			AndroidHttpClient client = AndroidHttpClient.newInstance("Dalvik/1.6.0 NetTester of OneProbe Group");
 			for(int i=0;i<num_test;i++) {
-				AndroidHttpClient client = AndroidHttpClient.newInstance("Dalvik/1.6.0 NetTester of OneProbe Group");
 				int statusCode = 0;
 				long ts = System.nanoTime();
 				String base_down_url = mserver+"random"; 
@@ -86,9 +86,9 @@ public class HTTPDownTP implements Constant {
 				} else {
 					Log.w(TAG, "download failed");
 				}
-				client.close();
+				httpGet.abort();
 			}
-			
+			client.close();
 		} catch (Exception e) {  
             Log.e(TAG, e.getMessage());
         }
