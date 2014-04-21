@@ -1,5 +1,7 @@
 package edu.nettester;
 
+import edu.nettester.db.MeasureContract.MeasureLog;
+import edu.nettester.db.MeasureDBHelper;
 import edu.nettester.task.RTTTask;
 import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
@@ -9,8 +11,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.app.Activity;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -214,7 +219,11 @@ public class MainActivity extends ActionBarActivity implements Constant {
      * @author Daoyuan
      */
     public static class ResultFragment extends Fragment {
+        
         private TextView text_result;
+        private ListView list_result;
+        
+        private MeasureDBHelper mDbHelper;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -224,8 +233,38 @@ public class MainActivity extends ActionBarActivity implements Constant {
             View rootView = inflater.inflate(R.layout.fragment_result, container, false);
             
             text_result = (TextView) rootView.findViewById(R.id.text_result);
+            list_result = (ListView) rootView.findViewById(R.id.list_result);
+            
+            initListView();
             
             return rootView;
+        }
+        
+        private void initListView() {
+            mDbHelper = new MeasureDBHelper(getActivity());
+            Cursor cursor = mDbHelper.fetchAllLogs();
+            String[] fromColumns = {MeasureLog.COLUMN_NAME_MID, 
+                    MeasureLog.COLUMN_NAME_TIME, MeasureLog.COLUMN_NAME_RTT};
+            //int[] toViews = {R.id.mlog_mid, R.id.mlog_time, R.id.mlog_rtt};
+            int[] toViews = {R.id.text1, R.id.text2, R.id.text3};
+            
+            if (DEBUG)
+                Log.d(TAG, "Count: " + cursor.getCount());
+            
+            SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+                    getActivity(),
+                    //android.R.layout.simple_list_item_1,
+                    //R.layout.list_item,
+                    R.layout.mylist_item_single_choice,
+                    cursor, fromColumns, toViews, 0);
+            list_result.setAdapter(adapter);
+            
+            list_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    // TODO
+                }
+            });
         }
         
         @Override
@@ -237,7 +276,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
         public void onResume() {
             super.onResume();
             
-            new DisplayResult(getActivity(), text_result).execute();
+            //new DisplayResult(getActivity(), text_result).execute();
         }
         
     }

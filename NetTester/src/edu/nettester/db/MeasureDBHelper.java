@@ -3,6 +3,7 @@ package edu.nettester.db;
 import edu.nettester.db.MeasureContract.MeasureLog;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -42,5 +43,20 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
         // we have no need to upgrade db
         db.execSQL(SQL_DELETE_MLOG);
         onCreate(db);
+    }
+    
+    public Cursor fetchAllLogs() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.query(
+                MeasureLog.TABLE_NAME,  // The table to query
+                null,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                                   // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+                );
+        
+        return cur;
     }
 }
