@@ -215,7 +215,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
      */
     public static class ResultFragment extends Fragment {
         private TextView text_result;
-        private Button btn_display;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -225,8 +224,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
             View rootView = inflater.inflate(R.layout.fragment_result, container, false);
             
             text_result = (TextView) rootView.findViewById(R.id.text_result);
-            btn_display = (Button) rootView.findViewById(R.id.btn_display);
-            //initButtons();
             
             return rootView;
         }
@@ -235,18 +232,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
         public void onSaveInstanceState(Bundle outState) {
             super.onSaveInstanceState(outState);
         }
-        
-//        private void initButtons() {
-//            btn_display.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(getActivity(), "Prepare to output", Toast.LENGTH_SHORT)
-//                         .show();
-//                    
-//                    new DisplayResult(getActivity(), text_result).execute();
-//                }
-//            });
-//        }
 
         @Override
         public void onResume() {
