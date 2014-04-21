@@ -56,15 +56,13 @@ public class MainActivity extends ActionBarActivity implements Constant {
         //setContentView(R.layout.activity_main);
         
          // init server list
-        if (savedInstanceState == null) {
-            AssetManager am = getAssets();
-            try {
-                InputStream is = am.open(ServerListName);
-                CommonMethod.readServerList(is);
-                is.close();
-            } catch (IOException e) {
-                Log.e(TAG, e.toString());
-            }
+        AssetManager am = getAssets();
+        try {
+            InputStream is = am.open(ServerListName);
+            CommonMethod.readServerList(is);
+            is.close();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
         }
         
         // setup action bar for tabs
