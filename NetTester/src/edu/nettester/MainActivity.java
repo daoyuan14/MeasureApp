@@ -107,7 +107,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_settings:
+            case R.id.action_about:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
