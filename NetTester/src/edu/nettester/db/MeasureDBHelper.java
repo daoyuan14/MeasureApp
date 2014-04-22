@@ -33,7 +33,7 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
         MeasureLog.MAX_RTT + TEXT_TYPE + COMMA_SEP +
         MeasureLog.STDV_RTT + TEXT_TYPE + COMMA_SEP +
         MeasureLog.DOWN_TP + TEXT_TYPE + COMMA_SEP +
-        MeasureLog.UP_TP + TEXT_TYPE +
+        MeasureLog.UP_TP + TEXT_TYPE + " DEFAULT '0'" +
         " )";
         
     private static final String SQL_DELETE_MLOG =
