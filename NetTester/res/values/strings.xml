@@ -7,7 +7,7 @@
     <string name="action_about">About</string>
     <string name="tab_measure">Measure</string>
     <string name="tab_result">Result</string>
-    <string name="txt_measuretarget">Measurement target:</string>
+    <string name="txt_measuretarget">Please select a measurement target:</string>
     <string name="hello_result">Hello result!</string>
     
     <string name="btn_test">Begin Test</string>
