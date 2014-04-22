@@ -1,13 +1,15 @@
 package edu.nettester.db;
 
 import edu.nettester.db.MeasureContract.MeasureLog;
+import edu.nettester.util.Constant;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-public class MeasureDBHelper extends SQLiteOpenHelper {
+public class MeasureDBHelper extends SQLiteOpenHelper implements Constant {
 
     /**
      * we will not change the db version
@@ -69,5 +71,19 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
                 );
         
         return cur;
+    }
+    
+    public int deleteOneRow(Cursor cursor) {
+        int result;
+        
+        long keyid = cursor.getLong(cursor.getColumnIndex(MeasureLog._ID));
+        
+        SQLiteDatabase db = this.getReadableDatabase();
+        result = db.delete(MeasureLog.TABLE_NAME, MeasureLog._ID+"="+keyid, null);
+        
+        if (DEBUG)
+            Log.d(TAG, "Delete "+result+" row.");
+        
+        return result;
     }
 }

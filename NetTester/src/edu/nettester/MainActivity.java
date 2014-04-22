@@ -321,11 +321,11 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     // Get the cursor, positioned to the corresponding row in the result set
                     Cursor cursor = (Cursor) list_result.getItemAtPosition(position);
                     
-                    new ResultDialogFragment(cursor).show(getActivity().getSupportFragmentManager(), "ResultDialog");
+                    new ResultDialogFragment(getActivity(), cursor).show(getActivity().getSupportFragmentManager(), "ResultDialog");
                     
-                    String muid = cursor.getString(cursor.getColumnIndex(MeasureLog.MUID));
-                    Toast.makeText(getActivity(), muid, Toast.LENGTH_SHORT)
-                         .show();
+//                    String muid = cursor.getString(cursor.getColumnIndex(MeasureLog.MUID));
+//                    Toast.makeText(getActivity(), muid, Toast.LENGTH_SHORT)
+//                         .show();
                 }
             });
         }
