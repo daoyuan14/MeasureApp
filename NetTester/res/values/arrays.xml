@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="pick_result">
+		<item>Delete this log</item>
+		<item>Show the detail</item>
+		<item>Close the dialog</item>
+	</string-array>
+</resources>

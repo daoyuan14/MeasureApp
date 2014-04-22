@@ -320,8 +320,10 @@ public class MainActivity extends ActionBarActivity implements Constant {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // Get the cursor, positioned to the corresponding row in the result set
                     Cursor cursor = (Cursor) list_result.getItemAtPosition(position);
-                    String muid = cursor.getString(cursor.getColumnIndex(MeasureLog.MUID));
                     
+                    new ResultDialogFragment(cursor).show(getActivity().getSupportFragmentManager(), "ResultDialog");
+                    
+                    String muid = cursor.getString(cursor.getColumnIndex(MeasureLog.MUID));
                     Toast.makeText(getActivity(), muid, Toast.LENGTH_SHORT)
                          .show();
                 }

@@ -43,5 +43,7 @@
     <string name="sync_ok">The sync of server list is successful! :-)</string>
     <string name="sync_fail">The sync of server list is failed! :()</string>
     <string name="btn_sync">Sync</string>
+    
+    <string name="pick_result">A measurement log</string>
 
 </resources>
