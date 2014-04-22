@@ -101,14 +101,14 @@ public class HTTPUpTP implements Constant {
 				}
 				httppost.abort();
 				
-				p = generateNewStr(p, 2^(i+1));
+				//p = generateNewStr(p, 2^(i+1));
+				p = generateNewStr(p, 2);
 			}
 			
-            
+            client.close();
 		} catch (Exception e) {  
             Log.e(OUTAG, e.getMessage());
         }
-		
 		return tp;
 	}
 	

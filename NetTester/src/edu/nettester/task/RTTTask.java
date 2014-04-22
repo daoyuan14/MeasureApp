@@ -216,6 +216,9 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         	deviceId = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
         }
     	
+        if (DEBUG)
+        	Log.d(TAG, "Device ID:" + deviceID);
+        
     	return deviceID;
     }
 }
