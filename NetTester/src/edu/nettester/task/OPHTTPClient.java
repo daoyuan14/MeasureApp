@@ -94,6 +94,8 @@ public class OPHTTPClient implements Constant {
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				HttpEntity entity = response.getEntity();
 				outstr = EntityUtils.toString(entity);
+				if (DEBUG)
+				    Log.d(TAG, "EntityUtils.toString:" + outstr + ", its length:" + entity.getContentLength());
 				
 				CookieStore mCookieStore = this.client.getCookieStore();
 				List<Cookie> cookies = mCookieStore.getCookies();
