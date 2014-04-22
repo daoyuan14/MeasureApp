@@ -294,13 +294,13 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.DOWN_TP)) {
                         String value = aCursor.getString(aColumnIndex);
                         TextView textView = (TextView) aView;
-                        textView.setText(CommonMethod.transferDOWN_TP(value));
+                        textView.setText(CommonMethod.transferTP(value));
                         return true;
                     }
                     else if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.UP_TP)) {
                         String value = aCursor.getString(aColumnIndex);
                         TextView textView = (TextView) aView;
-                        textView.setText(CommonMethod.transferUP_TP(value));
+                        textView.setText(CommonMethod.transferTP(value));
                         return true;
                     }
                     else if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.AVG_RTT)) {
