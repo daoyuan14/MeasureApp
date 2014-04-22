@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -29,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -259,9 +261,9 @@ public class MainActivity extends ActionBarActivity implements Constant {
         private void initListView() {
             mDbHelper = new MeasureDBHelper(getActivity());
             Cursor cursor = mDbHelper.fetchAllLogs();
-            String[] fromColumns = {MeasureLog.COLUMN_NAME_MID, MeasureLog.DOWN_TP, MeasureLog.AVG_RTT};
+            String[] fromColumns = {MeasureLog.M_NET_INFO, MeasureLog.DOWN_TP, MeasureLog.UP_TP, MeasureLog.AVG_RTT};
             //int[] toViews = {R.id.mlog_mid, R.id.mlog_time, R.id.mlog_rtt};
-            int[] toViews = {R.id.text1, R.id.text2, R.id.text3};
+            int[] toViews = {R.id.item1, R.id.text2, R.id.text3, R.id.text4};
             
             if (DEBUG)
                 Log.d(TAG, "Count: " + cursor.getCount());
@@ -272,6 +274,42 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     //R.layout.list_item,
                     R.layout.mylist_item_single_choice,
                     cursor, fromColumns, toViews, 0);
+            // set auto transmission
+            adapter.setViewBinder(new ViewBinder() {
+                public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
+                    if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.M_NET_INFO)) {
+                        if (DEBUG)
+                            Log.d(TAG, "Enter into M_NET_INFO");
+                        
+                        String value = aCursor.getString(aColumnIndex);
+                        ImageView imageView = (ImageView) aView;
+                        
+                        imageView.setImageResource(R.drawable.result_ic_cell_highlighted);
+                        
+                        return true;
+                    }
+                    if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.DOWN_TP)) {
+                        String value = aCursor.getString(aColumnIndex);
+                        TextView textView = (TextView) aView;
+                        textView.setText(value.substring(0, 3));
+                        return true;
+                    }
+                    else if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.UP_TP)) {
+                        String value = aCursor.getString(aColumnIndex);
+                        TextView textView = (TextView) aView;
+                        textView.setText(value.substring(0, 3));
+                        return true;
+                    }
+                    else if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.AVG_RTT)) {
+                        String value = aCursor.getString(aColumnIndex);
+                        TextView textView = (TextView) aView;
+                        textView.setText(value.substring(0, 3));
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            
             list_result.setAdapter(adapter);
             
             list_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {

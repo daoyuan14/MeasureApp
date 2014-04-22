@@ -41,7 +41,7 @@ public class HTTPUpTP implements Constant {
 			
 			String p = prepare_str(250000);
 			
-			for(int i=0;i<6;i++) {
+			for(int i=0;i<1;i++) {
 				int statusCode = 0;
 				//long ts = System.nanoTime();
 				long upsize = p.length();

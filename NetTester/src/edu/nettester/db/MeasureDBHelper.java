@@ -21,6 +21,7 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_MLOG =
         "CREATE TABLE " + MeasureLog.TABLE_NAME + " (" +
         MeasureLog._ID + " INTEGER PRIMARY KEY," +
+        MeasureLog.MTIME + TEXT_TYPE + COMMA_SEP +
         MeasureLog.MUSER + TEXT_TYPE + COMMA_SEP +
         MeasureLog.MID + TEXT_TYPE + COMMA_SEP +
         MeasureLog.UPFLG + " BOOLEAN " + COMMA_SEP +

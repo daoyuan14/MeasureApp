@@ -21,9 +21,7 @@ public final class MeasureContract {
         // TODO types need to be adjusted
         public static final String TABLE_NAME = "mlog";
 
-        public static final String COLUMN_NAME_MID = "mid";
-
-        public static final String COLUMN_NAME_TIME = "timestamp";
+        public static final String MTIME = "timestamp";
         
         public static final String MUSER = "muser";
         public static final String MID = "mid";

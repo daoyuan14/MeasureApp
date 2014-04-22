@@ -49,6 +49,8 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     	String mserver = servermap.get(target);
     	
     	String mid = String.valueOf(System.currentTimeMillis());
+    	String mtime = String.valueOf(System.currentTimeMillis()); //TODO should be high-level time
+    	
     	String mnetwork = getNetworkType(mContext);
     	String mlocation = getLocation(mContext);
     	String deviceID = getDeviceID(mContext);
@@ -89,7 +91,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         
         return new String[] {mid, deviceID, mnetwork, mlocation, mserver, String.valueOf(avg_rtt), 
         		String.valueOf(median_rtt), String.valueOf(min_rtt), String.valueOf(max_rtt), 
-        		String.valueOf(stdv_rtt), String.valueOf(downtp), String.valueOf(uptp)};
+        		String.valueOf(stdv_rtt), String.valueOf(downtp), String.valueOf(uptp), mtime};
     }
 
     /**
@@ -121,6 +123,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         values.put(MeasureLog.STDV_RTT, result[9]);
         values.put(MeasureLog.DOWN_TP, result[10]);
         values.put(MeasureLog.UP_TP, result[11]);
+        values.put(MeasureLog.MTIME, result[12]);
         
         long newRowId;
         newRowId = db.insert(
