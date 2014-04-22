@@ -84,7 +84,7 @@ public class LoginActivity extends ActionBarActivity {
     		LoginProc mlogin = new LoginProc();
         	String fout = mlogin.execute(str_email, str_pwd).get();
         	
-        	if(fout == "nouser" || fout == "fail") {
+        	if(fout.equals("nouser") || fout.equals("fail")) {
         		Toast.makeText(LoginActivity.this, "Login fail, please check your account or password", Toast.LENGTH_SHORT)
                 .show();
         	} else {

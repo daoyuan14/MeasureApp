@@ -2,11 +2,16 @@ package edu.nettester.task;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.lang.Float;
 import java.lang.String;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import edu.nettester.db.MeasureContract.MeasureLog;
 import edu.nettester.db.MeasureDBHelper;
+import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
 
 import android.content.ContentValues;
@@ -126,6 +131,45 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
             Log.d(TAG, "Insert a db row: "+newRowId);
         
         //upload data
+        String m_uid, m_hash;
+        if(CommonMethod.M_UID != null) {
+        	m_uid = CommonMethod.M_UID;
+        	m_hash = CommonMethod.M_HASH;
+        } else {
+        	m_uid = "0";
+        	m_hash = "";
+        }
+        
+        if(DEBUG) {
+        	Log.d(TAG, m_uid + ":" + m_hash);
+        }
+        
+        List<NameValuePair> DataList = new ArrayList<NameValuePair>();
+        DataList.add(new BasicNameValuePair("m_uid", m_uid));
+        DataList.add(new BasicNameValuePair("m_hash", m_hash));
+        DataList.add(new BasicNameValuePair(MeasureLog.MID, result[0]));
+        DataList.add(new BasicNameValuePair(MeasureLog.M_NET_INFO, result[1]));
+        DataList.add(new BasicNameValuePair(MeasureLog.M_LOC_INFO, result[3]));
+        DataList.add(new BasicNameValuePair(MeasureLog.M_TAR_SERVER, result[4]));
+        DataList.add(new BasicNameValuePair(MeasureLog.M_DEVID, result[2]));
+        DataList.add(new BasicNameValuePair(MeasureLog.AVG_RTT, result[5]));
+        DataList.add(new BasicNameValuePair(MeasureLog.MEDIAN_RTT, result[6]));
+        DataList.add(new BasicNameValuePair(MeasureLog.MAX_RTT, result[7]));
+        DataList.add(new BasicNameValuePair(MeasureLog.MIN_RTT, result[8]));
+        DataList.add(new BasicNameValuePair(MeasureLog.STDV_RTT, result[9]));
+        DataList.add(new BasicNameValuePair(MeasureLog.UP_TP, result[11]));
+        DataList.add(new BasicNameValuePair(MeasureLog.DOWN_TP, result[10]));
+        
+        //OPHTTPClient mclient = new OPHTTPClient();
+        //String upload_output = mclient.postPage(CommonMethod.updata_url, DataList);
+        try {
+	        UploadProc mupload = new UploadProc();
+	        String upload_output = mupload.execute(DataList).get();
+	        
+	        
+        } catch (Exception e) {  
+            Log.e(CommonMethod.TAG, e.getMessage());
+        }
         
     }
     
@@ -220,5 +264,27 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         	Log.d(TAG, "Device ID:" + deviceID);
         
     	return deviceID;
+    }
+    
+    private class UploadProc extends AsyncTask<List<NameValuePair>, Void, String> {
+    	@Override
+		protected String doInBackground(List<NameValuePair>...params) {
+    		String output = "";
+    		        	
+        	OPHTTPClient mclient = new OPHTTPClient();
+        	output = mclient.postPage(CommonMethod.updata_url, params[0]);
+        	
+        	if (CommonMethod.DEBUG)
+        		Log.d(CommonMethod.TAG, output);
+        	
+        	mclient.destroy();
+        	
+    		return output;
+    	}
+    	
+    	@Override
+        protected void onPostExecute(String result) {
+    		
+    	}
     }
 }
