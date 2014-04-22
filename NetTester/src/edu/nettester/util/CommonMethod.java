@@ -21,6 +21,11 @@ import java.util.LinkedHashMap;
  * @since 14-04-20
  */
 public class CommonMethod implements Constant {
+	
+    public static String PHPSESSID;
+    public static String M_UID;
+    public static String M_UNAME;
+    public static String M_HASH;
     
     private static void readServerList(BufferedReader br) throws IOException {
         //BufferedReader br = new BufferedReader(new InputStreamReader(is));
