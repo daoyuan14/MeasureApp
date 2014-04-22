@@ -26,6 +26,8 @@ public final class MeasureContract {
         public static final String COLUMN_NAME_TIME = "timestamp";
         
         public static final String MUSER = "muser";
+        public static final String MUID = "m_uid";
+        public static final String MHASH = "m_hash";
         public static final String MID = "mid";
         public static final String M_NET_INFO = "mnet";
         public static final String M_LOC_INFO = "mloc";
