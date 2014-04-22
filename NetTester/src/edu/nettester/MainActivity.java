@@ -317,8 +317,13 @@ public class MainActivity extends ActionBarActivity implements Constant {
             
             list_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                    // TODO
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // Get the cursor, positioned to the corresponding row in the result set
+                    Cursor cursor = (Cursor) list_result.getItemAtPosition(position);
+                    String muid = cursor.getString(cursor.getColumnIndex(MeasureLog.MUID));
+                    
+                    Toast.makeText(getActivity(), muid, Toast.LENGTH_SHORT)
+                         .show();
                 }
             });
         }
