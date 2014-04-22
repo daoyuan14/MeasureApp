@@ -37,6 +37,7 @@ public final class MeasureContract {
         public static final String STDV_RTT = "stdv_rtt";
         public static final String UP_TP = "up_tp";
         public static final String DOWN_TP = "down_tp";
+        public static final String UPFLG = "upflg";
         // TODO
     }
 }

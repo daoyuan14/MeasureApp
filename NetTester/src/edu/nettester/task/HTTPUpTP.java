@@ -17,6 +17,12 @@ import org.apache.http.message.BasicNameValuePair;
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
+/**
+ * 
+ * @author Weichao
+ * @since 14-04-20
+ */
+
 public class HTTPUpTP implements Constant {
 	private String mserver = "";
 	private String OUTAG = "NetTester";

@@ -18,6 +18,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 /**
@@ -43,6 +46,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     	String mid = String.valueOf(System.currentTimeMillis());
     	String mnetwork = getNetworkType(mContext);
     	String mlocation = getLocation(mContext);
+    	String deviceID = getDeviceID(mContext);
     	    	
         //perform ping task
         ArrayList<Float> rtt_list = new ArrayList<Float>();
@@ -78,7 +82,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     	}
     		
         
-        return new String[] {mid, mnetwork, mlocation, mserver, String.valueOf(avg_rtt), 
+        return new String[] {mid, deviceID, mnetwork, mlocation, mserver, String.valueOf(avg_rtt), 
         		String.valueOf(median_rtt), String.valueOf(min_rtt), String.valueOf(max_rtt), 
         		String.valueOf(stdv_rtt), String.valueOf(downtp), String.valueOf(uptp)};
     }
@@ -103,15 +107,15 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         ContentValues values = new ContentValues();
         values.put(MeasureLog.MID, result[0]);
         values.put(MeasureLog.M_NET_INFO, result[1]);
-        values.put(MeasureLog.M_LOC_INFO, result[2]);
-        values.put(MeasureLog.M_TAR_SERVER, result[3]);
-        values.put(MeasureLog.AVG_RTT, result[4]);
-        values.put(MeasureLog.MEDIAN_RTT, result[5]);
-        values.put(MeasureLog.MIN_RTT, result[6]);
-        values.put(MeasureLog.MAX_RTT, result[7]);
-        values.put(MeasureLog.STDV_RTT, result[8]);
-        values.put(MeasureLog.DOWN_TP, result[9]);
-        values.put(MeasureLog.UP_TP, result[10]);
+        values.put(MeasureLog.M_LOC_INFO, result[3]);
+        values.put(MeasureLog.M_TAR_SERVER, result[4]);
+        values.put(MeasureLog.AVG_RTT, result[5]);
+        values.put(MeasureLog.MEDIAN_RTT, result[6]);
+        values.put(MeasureLog.MIN_RTT, result[7]);
+        values.put(MeasureLog.MAX_RTT, result[8]);
+        values.put(MeasureLog.STDV_RTT, result[9]);
+        values.put(MeasureLog.DOWN_TP, result[10]);
+        values.put(MeasureLog.UP_TP, result[11]);
         
         long newRowId;
         newRowId = db.insert(
@@ -199,4 +203,20 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         	Log.d(TAG, "Location:" + outloc);
 		return outloc;
 	}
+    
+    private String getDeviceID(Context mContext) {
+    	String deviceID = "";
+    	TelephonyManager telephonyManager = null;
+    	
+    	TelephonyManager tryTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);    	
+    	String deviceId = telephonyManager.getDeviceId();  // This ID is permanent to a physical phone.
+        // "generic" means the emulator.
+    	
+        if (deviceId == null || Build.DEVICE.equals("generic")) {
+        	// This ID changes on OS reinstall/factory reset.
+        	deviceId = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
+        }
+    	
+    	return deviceID;
+    }
 }
