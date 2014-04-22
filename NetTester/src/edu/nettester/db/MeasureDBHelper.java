@@ -23,6 +23,7 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
         MeasureLog._ID + " INTEGER PRIMARY KEY," +
         MeasureLog.MUSER + TEXT_TYPE + COMMA_SEP +
         MeasureLog.MID + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.UPFLG + " BOOLEAN " + COMMA_SEP +
         MeasureLog.M_NET_INFO + TEXT_TYPE + COMMA_SEP +
         MeasureLog.M_LOC_INFO + TEXT_TYPE + COMMA_SEP +
         MeasureLog.M_TAR_SERVER + TEXT_TYPE + COMMA_SEP +
