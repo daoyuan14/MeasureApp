@@ -1,11 +1,23 @@
 package edu.nettester;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import edu.nettester.task.OPHTTPClient;
+import edu.nettester.util.CommonMethod;
+import edu.nettester.util.Constant;
+
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,8 +80,28 @@ public class LoginActivity extends ActionBarActivity {
     }
     
     public boolean sendLoginData(String str_email, String str_pwd) {
-        // TODO
-        
+    	try {
+    		LoginProc mlogin = new LoginProc();
+        	String fout = mlogin.execute(str_email, str_pwd).get();
+        	
+        	if(fout == "nouser" || fout == "fail") {
+        		Toast.makeText(LoginActivity.this, "Login fail, please check your account or password", Toast.LENGTH_SHORT)
+                .show();
+        	} else {
+        		String[] outs = fout.split("\t");
+        		CommonMethod.M_UID = outs[0];
+        		CommonMethod.M_UNAME = outs[1];
+        		CommonMethod.M_HASH = outs[2];
+        		
+        		//redirect to the main page?
+        		
+        		
+        	}
+        	
+    	} catch (Exception e) {  
+            Log.e(CommonMethod.TAG, e.getMessage());
+        }
+    	
         return false;
     }
     
@@ -107,5 +139,31 @@ public class LoginActivity extends ActionBarActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    private class LoginProc extends AsyncTask<String, Void, String> {
+    	@Override
+		protected String doInBackground(String... params) {
+    		String output = "";
+    		List<NameValuePair> DataList = new ArrayList<NameValuePair>();
+        	
+        	DataList.add(new BasicNameValuePair("UserName", params[0]));
+        	DataList.add(new BasicNameValuePair("Password", params[1]));
+        	
+        	OPHTTPClient mclient = new OPHTTPClient();
+        	output = mclient.postPage(CommonMethod.login_url, DataList);
+        	
+        	if (CommonMethod.DEBUG)
+        		Log.d(CommonMethod.TAG, output);
+        	
+        	mclient.destroy();
+        	
+    		return output;
+    	}
+    	
+    	@Override
+        protected void onPostExecute(String result) {
+    		
+    	}
     }
 }

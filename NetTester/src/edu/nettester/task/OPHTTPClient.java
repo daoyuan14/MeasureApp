@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
 import android.util.Log;
 
@@ -28,7 +29,7 @@ import android.util.Log;
 public class OPHTTPClient implements Constant {
 	private String url = "";
 	//private String method = "";
-	private String PHPSESSID = null;
+	//private String PHPSESSID = null;
 	private DefaultHttpClient client;
 	private HttpEntity httpEntity;
 	
@@ -43,8 +44,8 @@ public class OPHTTPClient implements Constant {
 		
 		HttpGet request = new HttpGet(this.url);
 		
-		if(this.PHPSESSID != null) {
-			request.setHeader("Cookie", "PHPSESSID="+this.PHPSESSID);
+		if(CommonMethod.PHPSESSID != null) {
+			request.setHeader("Cookie", "PHPSESSID="+CommonMethod.PHPSESSID);
 		}
 		
 		try {
@@ -59,7 +60,9 @@ public class OPHTTPClient implements Constant {
 				List<Cookie> cookies = mCookieStore.getCookies();
 				for (int i = 0; i < cookies.size(); i++) {
 					if ("PHPSESSID".equals(cookies.get(i).getName())) {
-						this.PHPSESSID = cookies.get(i).getValue();
+						CommonMethod.PHPSESSID = cookies.get(i).getValue();
+						if(DEBUG)
+							Log.d(TAG, CommonMethod.PHPSESSID);
                         break;
                     }
 				}
@@ -78,8 +81,8 @@ public class OPHTTPClient implements Constant {
 		
 		HttpPost request = new HttpPost(this.url);
 		
-		if(this.PHPSESSID != null) {
-			request.setHeader("Cookie", "PHPSESSID="+this.PHPSESSID);
+		if(CommonMethod.PHPSESSID != null) {
+			request.setHeader("Cookie", "PHPSESSID="+CommonMethod.PHPSESSID);
 		}
 		
 		try {
@@ -96,7 +99,9 @@ public class OPHTTPClient implements Constant {
 				List<Cookie> cookies = mCookieStore.getCookies();
 				for (int i = 0; i < cookies.size(); i++) {
 					if ("PHPSESSID".equals(cookies.get(i).getName())) {
-						this.PHPSESSID = cookies.get(i).getValue();
+						CommonMethod.PHPSESSID = cookies.get(i).getValue();
+						if(DEBUG)
+							Log.d(TAG, CommonMethod.PHPSESSID);
                         break;
                     }
 				}
