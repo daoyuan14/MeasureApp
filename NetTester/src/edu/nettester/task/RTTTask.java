@@ -110,10 +110,20 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         
+        String m_uid, m_hash;
+        if(CommonMethod.M_UID != null) {
+        	m_uid = CommonMethod.M_UID;
+        	m_hash = CommonMethod.M_HASH;
+        } else {
+        	m_uid = "0";
+        	m_hash = "";
+        }
+        
         // TODO insert some fake data
         ContentValues values = new ContentValues();
+        values.put(MeasureLog.MUID, m_uid);
         values.put(MeasureLog.MID, result[0]);
-        values.put(MeasureLog.M_NET_INFO, result[1]);
+        values.put(MeasureLog.M_NET_INFO, result[2]);
         values.put(MeasureLog.M_LOC_INFO, result[3]);
         values.put(MeasureLog.M_TAR_SERVER, result[4]);
         values.put(MeasureLog.AVG_RTT, result[5]);
@@ -134,31 +144,24 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
             Log.d(TAG, "Insert a db row: "+newRowId);
         
         //upload data
-        String m_uid, m_hash;
-        if(CommonMethod.M_UID != null) {
-        	m_uid = CommonMethod.M_UID;
-        	m_hash = CommonMethod.M_HASH;
-        } else {
-        	m_uid = "0";
-        	m_hash = "";
-        }
+        
         
         if(DEBUG) {
         	Log.d(TAG, m_uid + ":" + m_hash);
         }
         
         List<NameValuePair> DataList = new ArrayList<NameValuePair>();
-        DataList.add(new BasicNameValuePair("m_uid", m_uid));
-        DataList.add(new BasicNameValuePair("m_hash", m_hash));
+        DataList.add(new BasicNameValuePair(MeasureLog.MUID, m_uid));
+        DataList.add(new BasicNameValuePair(MeasureLog.MHASH, m_hash));
         DataList.add(new BasicNameValuePair(MeasureLog.MID, result[0]));
-        DataList.add(new BasicNameValuePair(MeasureLog.M_NET_INFO, result[1]));
+        DataList.add(new BasicNameValuePair(MeasureLog.M_NET_INFO, result[2]));
         DataList.add(new BasicNameValuePair(MeasureLog.M_LOC_INFO, result[3]));
         DataList.add(new BasicNameValuePair(MeasureLog.M_TAR_SERVER, result[4]));
-        DataList.add(new BasicNameValuePair(MeasureLog.M_DEVID, result[2]));
+        DataList.add(new BasicNameValuePair(MeasureLog.M_DEVID, result[1]));
         DataList.add(new BasicNameValuePair(MeasureLog.AVG_RTT, result[5]));
         DataList.add(new BasicNameValuePair(MeasureLog.MEDIAN_RTT, result[6]));
-        DataList.add(new BasicNameValuePair(MeasureLog.MAX_RTT, result[7]));
-        DataList.add(new BasicNameValuePair(MeasureLog.MIN_RTT, result[8]));
+        DataList.add(new BasicNameValuePair(MeasureLog.MAX_RTT, result[8]));
+        DataList.add(new BasicNameValuePair(MeasureLog.MIN_RTT, result[7]));
         DataList.add(new BasicNameValuePair(MeasureLog.STDV_RTT, result[9]));
         DataList.add(new BasicNameValuePair(MeasureLog.UP_TP, result[11]));
         DataList.add(new BasicNameValuePair(MeasureLog.DOWN_TP, result[10]));
@@ -169,7 +172,12 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
 	        UploadProc mupload = new UploadProc();
 	        String upload_output = mupload.execute(DataList).get();
 	        
-	        
+	        if(upload_output.equals("success")) {
+	        	//upload database
+	        	ContentValues upvalues = new ContentValues();
+	        	upvalues.put(MeasureLog.UPFLG, "1");
+	        	db.update(MeasureLog.TABLE_NAME, upvalues, MeasureLog._ID+"=?", new String[]{String.valueOf(newRowId)});
+	        }
         } catch (Exception e) {  
             Log.e(CommonMethod.TAG, e.getMessage());
         }
@@ -252,7 +260,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
 	}
     
     private String getDeviceID(Context mContext) {
-    	String deviceID = "";
+    	String deviceID = "NA";
     	TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
     	
     	String deviceId = telephonyManager.getDeviceId();  // This ID is permanent to a physical phone.
@@ -277,8 +285,8 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         	OPHTTPClient mclient = new OPHTTPClient();
         	output = mclient.postPage(CommonMethod.updata_url, params[0]);
         	
-        	if (DEBUG)
-        		Log.d(TAG, output);
+        	if (CommonMethod.DEBUG)
+        		Log.d(CommonMethod.TAG, output);
         	
         	mclient.destroy();
         	

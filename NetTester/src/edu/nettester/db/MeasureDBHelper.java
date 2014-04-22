@@ -22,7 +22,7 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
         "CREATE TABLE " + MeasureLog.TABLE_NAME + " (" +
         MeasureLog._ID + " INTEGER PRIMARY KEY," +
         MeasureLog.MTIME + TEXT_TYPE + COMMA_SEP +
-        MeasureLog.MUSER + TEXT_TYPE + COMMA_SEP +
+        MeasureLog.MUID + TEXT_TYPE + COMMA_SEP +
         MeasureLog.MID + TEXT_TYPE + COMMA_SEP +
         MeasureLog.UPFLG + " BOOLEAN " + COMMA_SEP +
         MeasureLog.M_NET_INFO + TEXT_TYPE + COMMA_SEP +
@@ -34,7 +34,7 @@ public class MeasureDBHelper extends SQLiteOpenHelper {
         MeasureLog.MAX_RTT + TEXT_TYPE + COMMA_SEP +
         MeasureLog.STDV_RTT + TEXT_TYPE + COMMA_SEP +
         MeasureLog.DOWN_TP + TEXT_TYPE + COMMA_SEP +
-        MeasureLog.UP_TP + TEXT_TYPE +
+        MeasureLog.UP_TP + TEXT_TYPE + " DEFAULT '0'" +
         " )";
         
     private static final String SQL_DELETE_MLOG =
