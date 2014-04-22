@@ -1,6 +1,13 @@
 package edu.nettester.util;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,8 +22,8 @@ import java.util.LinkedHashMap;
  */
 public class CommonMethod implements Constant {
     
-    public static void readServerList(InputStream is) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+    private static void readServerList(BufferedReader br) throws IOException {
+        //BufferedReader br = new BufferedReader(new InputStreamReader(is));
         
         HashMap<String, String> localmap = new LinkedHashMap<String, String>();
         
@@ -33,7 +40,33 @@ public class CommonMethod implements Constant {
             servermap.clear();
             servermap.putAll(localmap);
         }
+    }
+    
+    public static void readServerList(String filepath) throws FileNotFoundException, IOException {
+        FileReader fr = new FileReader(filepath);
+        BufferedReader br = new BufferedReader(fr);
+        readServerList(br);
+        br.close();
+        fr.close();
+    }
+    
+    public static boolean isFileExists(String filepath) {
+        File file = new File(filepath);
+        return file.exists();
+    }
+    
+    public static void writeFile(String filepath, InputStream is) throws IOException {
+        File file = new File(filepath);
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
         
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        
+        String line;
+        while ((line = br.readLine()) != null) {
+            bw.write(line + "\n");
+        }
+        
+        bw.close();
         br.close();
     }
 

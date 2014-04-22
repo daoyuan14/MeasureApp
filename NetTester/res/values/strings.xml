@@ -13,6 +13,7 @@
     <string name="btn_test">Begin Test</string>
     <string name="btn_login">Log In</string>
     <string name="btn_signup">Sign Up</string>
+    <string name="btn_close">Close</string>
     
     <string name="enter_username">User name</string>
     <string name="enter_password">Password</string>
@@ -36,5 +37,11 @@
     <string name="pref_about_intro_summary">A project for PolyU COMP5527</string>
     <string name="pref_about_version_title">App version</string>
     <string name="pref_about_version_summary">1.0.0.0</string>
+    
+    <string name="sync_default">Please click the button to sync:</string>
+    <string name="sync_doing">It is syncing, please wait a bit ...</string>
+    <string name="sync_ok">The sync of server list is successful! :-)</string>
+    <string name="sync_fail">The sync of server list is failed! :()</string>
+    <string name="btn_sync">Sync</string>
 
 </resources>

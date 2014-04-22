@@ -34,6 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -56,12 +57,19 @@ public class MainActivity extends ActionBarActivity implements Constant {
         // see ft.add(android.R.id.content, mFragment, mTag);
         //setContentView(R.layout.activity_main);
         
-         // init server list
-        AssetManager am = getAssets();
+        /*
+         * init server list
+         */
         try {
-            InputStream is = am.open(ServerListName);
-            CommonMethod.readServerList(is);
-            is.close();
+            if (!CommonMethod.isFileExists(ServerListPath)) {
+                // copy the default server list
+                AssetManager am = getAssets();
+                InputStream is = am.open(ServerListName);
+                CommonMethod.writeFile(ServerListPath, is);
+                is.close();
+            }
+            CommonMethod.readServerList(ServerListPath);
+            
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
