@@ -206,9 +206,8 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     
     private String getDeviceID(Context mContext) {
     	String deviceID = "";
-    	TelephonyManager telephonyManager = null;
+    	TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
     	
-    	TelephonyManager tryTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);    	
     	String deviceId = telephonyManager.getDeviceId();  // This ID is permanent to a physical phone.
         // "generic" means the emulator.
     	
