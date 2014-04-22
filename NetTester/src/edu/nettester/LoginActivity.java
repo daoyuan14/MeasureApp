@@ -7,8 +7,18 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends ActionBarActivity {
+    
+    private Button btn_login;
+    private Button btn_signup;
+    private EditText edit_email;
+    private EditText edit_pwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +28,56 @@ public class LoginActivity extends ActionBarActivity {
         //enable the app icon as an Up button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        
+        findViews();
+        initButtons();
+    }
+    
+    private void findViews() {
+        btn_login = (Button) findViewById(R.id.btn_login);
+        btn_signup = (Button) findViewById(R.id.btn_signup);
+        edit_email = (EditText) findViewById(R.id.edit_email);
+        edit_pwd = (EditText) findViewById(R.id.edit_pwd);
+    }
+    
+    private void initButtons() {
+        btn_login.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str_email = edit_email.getText().toString();
+                String str_pwd = edit_pwd.getText().toString();
+                
+                if (str_email.isEmpty() || str_pwd.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Email or password should be not null", Toast.LENGTH_SHORT)
+                         .show();
+                } else {
+                    if (sendLoginData(str_email, str_pwd)) {
+                        // TODO login success
+                    }
+                }
+            }
+        });
+        
+        btn_signup.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO
+                openSignUpActivity();
+            }
+        });
+    }
+    
+    public boolean sendLoginData(String str_email, String str_pwd) {
+        // TODO
+        
+        return false;
+    }
+    
+    /**
+     * TODO
+     */
+    private void openSignUpActivity() {
+        
     }
     
     @Override
