@@ -19,7 +19,7 @@
     <PreferenceCategory
         android:key="pref_server"
         android:title="@string/pref_server_title">
-        <Preference
+        <edu.nettester.SyncDialogPreference
             android:key="pref_server_dialog"
             android:title="@string/pref_server_dialog_title"
             android:summary="@string/pref_server_dialog_summary" />
