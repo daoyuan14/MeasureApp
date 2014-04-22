@@ -74,5 +74,23 @@ public class CommonMethod implements Constant {
         bw.close();
         br.close();
     }
+    
+    public static String transferDOWN_TP(String oldValue) {
+        String newValue = oldValue;
+        
+        return newValue;
+    }
+    
+    public static String transferUP_TP(String oldValue) {
+        String newValue = oldValue;
+        
+        return newValue;
+    }
+    
+    public static String transferAVG_RTT(String oldValue) {
+        String newValue = oldValue;
+        
+        return newValue;
+    }
 
 }
