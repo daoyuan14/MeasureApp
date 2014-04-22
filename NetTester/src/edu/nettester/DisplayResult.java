@@ -11,6 +11,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
+/**
+ * @deprecated
+ * @author Daoyuan
+ */
 public class DisplayResult extends AsyncTask<Void, Void, String> implements Constant {
     
     private Context mContext;

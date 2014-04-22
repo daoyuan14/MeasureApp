@@ -274,8 +274,8 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         	OPHTTPClient mclient = new OPHTTPClient();
         	output = mclient.postPage(CommonMethod.updata_url, params[0]);
         	
-        	if (CommonMethod.DEBUG)
-        		Log.d(CommonMethod.TAG, output);
+        	if (DEBUG)
+        		Log.d(TAG, output);
         	
         	mclient.destroy();
         	
