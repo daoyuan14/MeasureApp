@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -75,18 +76,22 @@ public class CommonMethod implements Constant {
         br.close();
     }
     
-    public static String transferDOWN_TP(String oldValue) {
+    public static String transferTP(String oldValue) {
         String newValue = oldValue;
+        float ov = Float.valueOf(oldValue)/1000;
+        Formatter fmt = new Formatter();
+        
+        if(ov>=100) {
+        	newValue = String.valueOf(Math.floor(ov+0.5));
+        } else if(ov>10) {
+        	newValue = fmt.format("%.1f", ov).toString();
+        } else {
+        	newValue = fmt.format("%.2f", ov).toString();
+        }
         
         return newValue;
     }
-    
-    public static String transferUP_TP(String oldValue) {
-        String newValue = oldValue;
         
-        return newValue;
-    }
-    
     public static String transferAVG_RTT(String oldValue) {
         String newValue = oldValue;
         
