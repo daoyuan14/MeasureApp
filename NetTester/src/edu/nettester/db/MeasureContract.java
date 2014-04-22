@@ -30,6 +30,7 @@ public final class MeasureContract {
         public static final String M_NET_INFO = "mnet";
         public static final String M_LOC_INFO = "mloc";
         public static final String M_TAR_SERVER = "mserver";
+        public static final String M_DEVID = "mdevid";
         public static final String AVG_RTT = "avg_rtt";
         public static final String MEDIAN_RTT = "median_rtt";
         public static final String MIN_RTT = "min_rtt";
