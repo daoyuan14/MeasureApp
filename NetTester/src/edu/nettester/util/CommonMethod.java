@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -94,8 +95,17 @@ public class CommonMethod implements Constant {
         
     public static String transferAVG_RTT(String oldValue) {
         String newValue = oldValue;
-        
+        float ov = Float.valueOf(oldValue);
+        newValue = String.valueOf(Math.floor(ov+0.5));
         return newValue;
+    }
+    
+    public static String transferTime(String timestamp) {
+    	String newValue = "";
+    	long ts = Long.valueOf(timestamp);
+    	SimpleDateFormat df = new SimpleDateFormat("MMM d\nHH:mm");
+    	newValue = df.format(ts);    	
+    	return newValue;
     }
 
 }
