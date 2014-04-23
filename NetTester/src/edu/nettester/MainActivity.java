@@ -238,7 +238,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
      */
     public static class ResultFragment extends Fragment {
         
-        private TextView text_result;
         private ListView list_result;
         
         private MeasureDBHelper mDbHelper;
@@ -250,7 +249,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
             
             View rootView = inflater.inflate(R.layout.fragment_result, container, false);
             
-            text_result = (TextView) rootView.findViewById(R.id.text_result);
             list_result = (ListView) rootView.findViewById(R.id.list_result);
             
             initListView();
