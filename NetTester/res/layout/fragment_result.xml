@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout1"
-        android:layout_marginTop="40.0dip"
+        android:layout_marginTop="50.0dip"
         android:layout_marginBottom="16.0dip" >
     </ListView>
 
