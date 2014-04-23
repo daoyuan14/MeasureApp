@@ -61,6 +61,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.nettester.SettingsActivity" />
         </activity>
+        
+        <!-- A child of the login activity -->
+        <activity
+            android:name="edu.nettester.SignupActivity"
+            android:label="@string/ui_signup_title"
+            android:parentActivityName="edu.nettester.LoginActivity" >
+            <!-- Parent activity meta-data to support API level 7+ -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.nettester.LoginActivity" />
+        </activity>
 
     </application>
 

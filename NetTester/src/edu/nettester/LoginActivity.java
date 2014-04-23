@@ -8,7 +8,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import edu.nettester.task.OPHTTPClient;
 import edu.nettester.util.CommonMethod;
-import edu.nettester.util.Constant;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -73,7 +72,6 @@ public class LoginActivity extends ActionBarActivity {
         btn_signup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
                 openSignUpActivity();
             }
         });
@@ -105,11 +103,9 @@ public class LoginActivity extends ActionBarActivity {
         return false;
     }
     
-    /**
-     * TODO
-     */
     private void openSignUpActivity() {
-        
+        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+        startActivity(intent);
     }
     
     @Override
