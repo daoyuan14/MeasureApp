@@ -11,14 +11,10 @@ import android.provider.BaseColumns;
  * @see http://developer.android.com/training/basics/data-storage/databases.html
  */
 public final class MeasureContract {
-    // To prevent someone from accidentally instantiating the contract class,
-    // give it an empty constructor.
     public MeasureContract() {
     }
 
-    /* Inner class that defines the table contents */
     public static abstract class MeasureLog implements BaseColumns {
-        // TODO types need to be adjusted
         public static final String TABLE_NAME = "mlog";
 
         public static final String MTIME = "timestamp";
@@ -39,6 +35,12 @@ public final class MeasureContract {
         public static final String UP_TP = "up_tp";
         public static final String DOWN_TP = "down_tp";
         public static final String UPFLG = "upflg";
-        // TODO
+    }
+    
+    public static abstract class OfflineDel implements BaseColumns {
+        public static final String TABLE_NAME = "moffline";
+        
+        public static final String MID = "mid";
+        public static final String MUID = "m_uid";
     }
 }
