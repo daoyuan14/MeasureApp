@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ellipsize="marquee"
-        android:gravity="center"
+        android:gravity="right"
         android:singleLine="true"
         android:text="item5"
         android:textAppearance="?android:attr/textAppearanceSmall"

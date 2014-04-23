@@ -289,7 +289,13 @@ public class MainActivity extends ActionBarActivity implements Constant {
                         
                         return true;
                     }
-                    if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.DOWN_TP)) {
+                    else if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.MTIME)) {
+                        String value = aCursor.getString(aColumnIndex);
+                        TextView textView = (TextView) aView;
+                        textView.setText(CommonMethod.transferTime(value));
+                        return true;
+                    }
+                    else if (aColumnIndex == aCursor.getColumnIndex(MeasureLog.DOWN_TP)) {
                         String value = aCursor.getString(aColumnIndex);
                         TextView textView = (TextView) aView;
                         textView.setText(CommonMethod.transferTP(value));
@@ -320,10 +326,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     Cursor cursor = (Cursor) list_result.getItemAtPosition(position);
                     
                     new ResultDialogFragment(getActivity(), cursor).show(getActivity().getSupportFragmentManager(), "ResultDialog");
-                    
-//                    String muid = cursor.getString(cursor.getColumnIndex(MeasureLog.MUID));
-//                    Toast.makeText(getActivity(), muid, Toast.LENGTH_SHORT)
-//                         .show();
                 }
             });
         }
