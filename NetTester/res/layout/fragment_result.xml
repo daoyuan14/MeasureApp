@@ -34,21 +34,39 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="DOWNLOAD" />
+            android:text="DOWN\n(Mbps)" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="UPLOAD" />
+            android:text="UPLOAD\n(Mbps)" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="RTT" />
+            android:text="RTT\n(ms)" />
+        
+        <!--
+        <RelativeLayout android:layout_weight="1"
+            android:layout_width="0.0dip"
+            android:layout_height="52.0dip">
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4.0dip"
+                android:src="@drawable/results_tabbar_ic_ping_default" />
+            <TextView android:textSize="8.0dip"
+                android:gravity="center"
+                android:layout_width="23.0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14.0dip"
+                android:text="RTT" />
+        </RelativeLayout>
+        -->
+        
     </LinearLayout>
 
     <ListView
@@ -56,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout1"
-        android:layout_marginTop="30.0dip"
+        android:layout_marginTop="40.0dip"
         android:layout_marginBottom="16.0dip" >
     </ListView>
 
