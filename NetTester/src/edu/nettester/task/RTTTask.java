@@ -3,7 +3,7 @@ package edu.nettester.task;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.lang.Float;
+//import java.lang.Float;
 import java.lang.String;
 
 import org.apache.http.NameValuePair;
@@ -56,21 +56,21 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     	String deviceID = getDeviceID(mContext);
     	    	
         //perform ping task
-        ArrayList<Float> rtt_list = new ArrayList<Float>();
+        ArrayList<Double> rtt_list = new ArrayList<Double>();
         for(int i=0;i<10;i++) {
         	HTTPPinger pingtask = new HTTPPinger(mserver);
-        	float rtt = pingtask.execute();
+        	double rtt = pingtask.execute();
         	rtt_list.add(rtt);
         	
         	//update progress
         	
         }
         Collections.sort(rtt_list);
-        float min_rtt = rtt_list.get(0);
-        float max_rtt = rtt_list.get(9);        
-        float avg_rtt = getAverage(rtt_list);
-        float median_rtt = getMedian(rtt_list);
-        float stdv_rtt = getStdDv(rtt_list);
+        double min_rtt = rtt_list.get(0);
+        double max_rtt = rtt_list.get(9);        
+        double avg_rtt = getAverage(rtt_list);
+        double median_rtt = getMedian(rtt_list);
+        double stdv_rtt = getStdDv(rtt_list);
         
         //perform download throughput test
         HTTPDownTP downtask = new HTTPDownTP(mserver);
@@ -185,32 +185,32 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     }
     
     
-    public float getAverage(ArrayList<Float> inlist){
+    public double getAverage(ArrayList<Double> inlist){
     	int num = inlist.size();
         int sum = 0;
         for(int i=0;i<num;i++){
             sum += inlist.get(i);
         }
-        return (float)(sum/num);
+        return (double)(sum/num);
     }
     
-    public float getStdDv(ArrayList<Float> inlist){
+    public double getStdDv(ArrayList<Double> inlist){
     	int num = inlist.size();
         double sum = 0;
-        float avg_val = getAverage(inlist);
+        double avg_val = getAverage(inlist);
         for(int i=0;i<num;i++){
-        	float cur_val = inlist.get(i);
+        	double cur_val = inlist.get(i);
             sum += Math.sqrt((cur_val - avg_val) * (cur_val - avg_val));
         }
-        return (float)(sum/(num-1));
+        return (double)(sum/(num-1));
     }
     
-    public float getMedian(ArrayList<Float> inlist) {
+    public double getMedian(ArrayList<Double> inlist) {
     	int num = inlist.size();
     	Collections.sort(inlist);
     	
     	int rindex = 0;
-    	float outval;
+    	double outval;
     	
     	int a=num%2;
     	if (a==0) {

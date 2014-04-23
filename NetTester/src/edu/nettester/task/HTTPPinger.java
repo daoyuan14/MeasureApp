@@ -22,8 +22,8 @@ public class HTTPPinger implements Constant {
         this.mserver = mserver;
     }
 	
-	public float execute() {
-		float rtt = 0;
+	public double execute() {
+		double rtt = 0;
 		try {
 			int resp_code = 0;
 			
