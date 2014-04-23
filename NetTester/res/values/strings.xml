@@ -10,6 +10,8 @@
     <string name="txt_measuretarget">Please select a measurement target:</string>
     <string name="hello_result">Hello result!</string>
     
+    <string name="ui_result_title">NetTester Result</string>
+    
     <string name="btn_test">Begin Test</string>
     <string name="btn_login">Log In</string>
     <string name="btn_signup">Sign Up</string>

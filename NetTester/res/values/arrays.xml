@@ -2,7 +2,7 @@
 <resources>
 	<string-array name="pick_result">
 		<item>Delete this log</item>
-		<item>Show the detail</item>
+		<item>Show its detail</item>
 		<item>Close the dialog</item>
 	</string-array>
 </resources>

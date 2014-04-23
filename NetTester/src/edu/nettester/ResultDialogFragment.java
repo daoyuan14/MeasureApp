@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -40,6 +41,7 @@ public class ResultDialogFragment extends DialogFragment implements Constant {
                                 
                             case 1: //Show
                                 if (DEBUG) Log.d(TAG, "1");
+                                openResultActivity();
                                 break;
                                 
                             case 2: //Close
@@ -54,6 +56,11 @@ public class ResultDialogFragment extends DialogFragment implements Constant {
                     }
                 });
         return builder.create();
+    }
+    
+    private void openResultActivity() {
+        Intent intent = new Intent(mContext, ResultActivity.class);
+        startActivity(intent);
     }
 
 }
