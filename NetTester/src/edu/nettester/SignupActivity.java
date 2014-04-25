@@ -9,8 +9,11 @@ import org.apache.http.message.BasicNameValuePair;
 import edu.nettester.task.OPHTTPClient;
 import edu.nettester.util.CommonMethod;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
@@ -53,7 +56,7 @@ public class SignupActivity extends ActionBarActivity {
     private void initButtons() {
         btn_signup.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
             	String str_email = edit_email.getText().toString();
                 String str_pwd1 = edit_pwd1.getText().toString();
                 String str_pwd2 = edit_pwd2.getText().toString();
@@ -66,15 +69,32 @@ public class SignupActivity extends ActionBarActivity {
                     .show();
                 } else {
                     if (sendSignupData(str_email, str_pwd1)) {
-                    	
-                        // TODO login success
+                        Toast.makeText(SignupActivity.this, "Sign up is success!", Toast.LENGTH_SHORT)
+                             .show();
+                        
+                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+                        Editor editor = sharedPref.edit();
+                        editor.putString(SettingsFragment.KEY_PREF_USERNAME, CommonMethod.M_UNAME);
+                        editor.commit();
+                        
+                        openSettingActivity();
                     }
                 }
             }
         });
     }
     
+    /**
+     * TODO
+     */
+    private void openSettingActivity() {
+        Intent intent = new Intent(SignupActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+    
     public boolean sendSignupData(String str_email, String str_pwd) {
+        boolean result = false;
+        
     	try {
     		RegProc msignup = new RegProc();
         	String fout = msignup.execute(str_email, str_pwd).get();
@@ -90,17 +110,14 @@ public class SignupActivity extends ActionBarActivity {
         		CommonMethod.M_UID = outs[0];
         		CommonMethod.M_UNAME = outs[1];
         		CommonMethod.M_HASH = outs[2];
-        		
-        		//redirect to the main page?
-        		
-        		
+        		result = true;
         	}
         	
     	} catch (Exception e) {  
             Log.e(CommonMethod.TAG, e.getMessage());
         }
     	
-        return false;
+    	return result;
     }
     
     @Override
