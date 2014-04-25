@@ -66,7 +66,7 @@ public class LoginActivity extends ActionBarActivity {
                          .show();
                 } else {
                     if (sendLoginData(str_email, str_pwd)) {
-                        Toast.makeText(LoginActivity.this, "Log in is success: "+CommonMethod.M_UNAME, Toast.LENGTH_SHORT)
+                        Toast.makeText(LoginActivity.this, str_email + " Log in is success: "+CommonMethod.M_UNAME, Toast.LENGTH_SHORT)
                              .show();
                         
                         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(view.getContext());
