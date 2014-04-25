@@ -7,17 +7,27 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 public class ResultActivity extends ActionBarActivity {
+    
+    private ListView alog_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.alog_result);
         
         //enable the app icon as an Up button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        
+        alog_list = (ListView) findViewById(R.id.alog_list);
+        initListView();
+    }
+    
+    private void initListView() {
+        
     }
     
     @Override
