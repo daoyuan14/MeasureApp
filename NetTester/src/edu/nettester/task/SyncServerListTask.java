@@ -6,16 +6,21 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 
 import edu.nettester.R;
+import edu.nettester.SettingsFragment;
 import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 
 public class SyncServerListTask extends AsyncTask<Void, Void, Boolean> implements Constant {
     
@@ -42,6 +47,16 @@ public class SyncServerListTask extends AsyncTask<Void, Void, Boolean> implement
                 
                 // update server list
                 CommonMethod.readServerList(ServerListPath);
+                
+                // update preferences
+                long ts = System.currentTimeMillis();
+                SimpleDateFormat df = new SimpleDateFormat("MMM d HH:mm, yyyy");
+                String curtime = df.format(ts);
+                
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mView.getContext());
+                Editor editor = sharedPref.edit();
+                editor.putString(SettingsFragment.KEY_PREF_LASTSERVER, curtime);
+                editor.commit();
                 
                 result = true;
                 
