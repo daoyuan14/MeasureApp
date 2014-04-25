@@ -14,11 +14,21 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ResultActivity extends ActionBarActivity implements Constant {
     
     private Intent myIntent;
+    
+    private ImageView alog_wifi;
+    private TextView alog_time;
+    private TextView alog_muid;
+    private TextView alog_mserver;
+    private TextView alog_DOWN_TP;
+    private TextView alog_UP_TP;
+    private TextView alog_AVG_RTT;
+    private TextView alog_mloc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +39,7 @@ public class ResultActivity extends ActionBarActivity implements Constant {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         
+        initViews();
         handleIntent();
     }
     
@@ -37,6 +48,17 @@ public class ResultActivity extends ActionBarActivity implements Constant {
         super.onNewIntent(intent);      
         setIntent(intent);
         handleIntent();
+    }
+    
+    private void initViews() {
+        alog_wifi = (ImageView) findViewById(R.id.alog_wifi);
+        alog_time = (TextView) findViewById(R.id.alog_time);
+        alog_muid = (TextView) findViewById(R.id.alog_muid);
+        alog_mserver = (TextView) findViewById(R.id.alog_mserver);
+        alog_DOWN_TP = (TextView) findViewById(R.id.alog_DOWN_TP);
+        alog_UP_TP = (TextView) findViewById(R.id.alog_UP_TP);
+        alog_AVG_RTT = (TextView) findViewById(R.id.alog_AVG_RTT);
+        alog_mloc = (TextView) findViewById(R.id.alog_mloc);
     }
     
     /**
@@ -55,10 +77,53 @@ public class ResultActivity extends ActionBarActivity implements Constant {
         Cursor cursor = mDbHelper.fetchOneRow(keyid);
         cursor.moveToFirst();
         String value;
+        int columnIndex;
         
-        TextView alog_time = (TextView) findViewById(R.id.alog_time);
-        value = cursor.getString(cursor.getColumnIndex(MeasureLog.MTIME));
+        // wifi
+        columnIndex = cursor.getColumnIndex(MeasureLog.M_NET_INFO);
+        value = cursor.getString(columnIndex);
+        if (value.equals("WIFI"))
+            alog_wifi.setImageResource(R.drawable.result_ic_wifi_highlighted);
+        else
+            alog_wifi.setImageResource(R.drawable.result_ic_cell_highlighted);
+        
+        // time
+        columnIndex = cursor.getColumnIndex(MeasureLog.MTIME);
+        value = cursor.getString(columnIndex);
         alog_time.setText(CommonMethod.transferTime(value));
+        
+        // user name
+        columnIndex = cursor.getColumnIndex(MeasureLog.MUID);
+        value = cursor.getString(columnIndex);
+        if (value.equals("0"))
+            alog_muid.setText(R.string.pref_login_username_default);
+        else
+            alog_muid.setText(value);
+        
+        // target server
+        columnIndex = cursor.getColumnIndex(MeasureLog.M_TAR_SERVER);
+        value = cursor.getString(columnIndex);
+        alog_mserver.setText(value);
+        
+        // download
+        columnIndex = cursor.getColumnIndex(MeasureLog.DOWN_TP);
+        value = cursor.getString(columnIndex);
+        alog_DOWN_TP.setText(CommonMethod.transferTP(value)+" Mbps");
+        
+        // upload
+        columnIndex = cursor.getColumnIndex(MeasureLog.UP_TP);
+        value = cursor.getString(columnIndex);
+        alog_UP_TP.setText(CommonMethod.transferTP(value)+" Mbps");
+        
+        // RTT
+        columnIndex = cursor.getColumnIndex(MeasureLog.AVG_RTT);
+        value = cursor.getString(columnIndex);
+        alog_AVG_RTT.setText(CommonMethod.transferAVG_RTT(value)+" ms");
+        
+        // client location
+        columnIndex = cursor.getColumnIndex(MeasureLog.M_LOC_INFO);
+        value = cursor.getString(columnIndex);
+        alog_mloc.setText(value);
     }
         
     @Override
