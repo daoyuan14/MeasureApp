@@ -86,4 +86,25 @@ public class MeasureDBHelper extends SQLiteOpenHelper implements Constant {
         
         return result;
     }
+    
+    public Cursor fetchOneRow(long keyid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.query(
+                MeasureLog.TABLE_NAME,  // The table to query
+                null,                               // The columns to return
+                MeasureLog._ID+"="+keyid,           // The columns for the WHERE clause
+                null,                                   // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+                );
+        
+        return cur;
+    }
+    
+    public long fetchKeyId(Cursor cursor) {
+        long keyid = cursor.getLong(cursor.getColumnIndex(MeasureLog._ID));
+        
+        return keyid;
+    }
 }

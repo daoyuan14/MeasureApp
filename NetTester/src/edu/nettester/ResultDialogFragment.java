@@ -60,6 +60,13 @@ public class ResultDialogFragment extends DialogFragment implements Constant {
     
     private void openResultActivity() {
         Intent intent = new Intent(mContext, ResultActivity.class);
+        
+        MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
+        long keyid = mDbHelper.fetchKeyId(cursor);
+        intent.putExtra("keyid", keyid);
+        if (DEBUG)
+            Log.d(TAG, "sent keyid: "+keyid);
+        
         startActivity(intent);
     }
 
