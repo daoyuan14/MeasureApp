@@ -172,7 +172,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
 	        UploadProc mupload = new UploadProc();
 	        String upload_output = mupload.execute(DataList).get();
 	        
-	        if(upload_output.equals("success")) {
+	        if(upload_output.equals("success") || upload_output.equals("exist")) {
 	        	//upload database
 	        	ContentValues upvalues = new ContentValues();
 	        	upvalues.put(MeasureLog.UPFLG, "1");
