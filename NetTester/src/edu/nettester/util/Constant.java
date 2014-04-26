@@ -29,6 +29,10 @@ public interface Constant {
     
     public static final String updata_url = "http://158.132.255.76:25001/mserver/updata.php";
     
+    public static final String deldata_url = "http://158.132.255.76:25001/mserver/deldata.php";
+    
+    public static final String delcheck_url = "http://158.132.255.76:25001/mserver/delcheck.php";
+    
     public static final int Cat_RTT = 1;
     public static final int Cat_DOWNLOAD = 2;
     public static final int Cat_UPLOAD = 3;
