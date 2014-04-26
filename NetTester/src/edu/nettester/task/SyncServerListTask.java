@@ -63,11 +63,11 @@ public class SyncServerListTask extends AsyncTask<Void, Void, Boolean> implement
             } else {
                 result = false;
             }
-            
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
-        
+        httpGet.abort();
+        client.close();
         return result;
     }
     
