@@ -263,17 +263,15 @@ public class MainActivity extends ActionBarActivity implements Constant {
             btn_test.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Prepare to test", Toast.LENGTH_SHORT)
-                         .show();
+                    if (DEBUG)
+                        Toast.makeText(getActivity(), "Prepare to test", Toast.LENGTH_SHORT).show();
                     
                     isVisible = true;
                     CommonMethod.isMeasure = true;
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
                     
                     btn_test.setEnabled(false);
-                    new RTTTask(getActivity(), txt_task, mProgress).execute(target);
-                    
-                    btn_look.setVisibility(View.VISIBLE);
+                    new RTTTask(getActivity(), txt_task, mProgress, btn_look).execute(target);
                 }
             });
             

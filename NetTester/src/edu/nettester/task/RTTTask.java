@@ -37,6 +37,7 @@ import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -50,11 +51,13 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     private Context mContext;
     private TextView txt_task;
     private ProgressBar mProgress;
+    private Button btn_look;
     
-    public RTTTask(Context context, TextView text, ProgressBar progress) {
+    public RTTTask(Context context, TextView text, ProgressBar progress, Button look) {
         mContext = context;
         txt_task = text;
         mProgress = progress;
+        btn_look = look;
     }
 
     @Override
@@ -190,9 +193,12 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         if (DEBUG)
             Log.d(TAG, "Insert a db row: "+newRowId);
         
-        //upload data
+        // display btn_look
+        btn_look.setVisibility(View.VISIBLE);
         
-        
+        /*
+         * upload data
+         */
         if(DEBUG) {
         	Log.d(TAG, m_uid + ":" + m_hash);
         }
