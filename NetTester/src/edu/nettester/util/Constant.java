@@ -9,6 +9,10 @@ public interface Constant {
     
     public static final String TAG = "NetTester";
     
+    public static final String PREF_MUID = "muid";
+    
+    public static final String PREF_MHASH = "mhash";
+    
     public static final String APP_DIR = "/data/data/edu.nettester/";
     
     public static final String ServerListName = "serverlist.txt";

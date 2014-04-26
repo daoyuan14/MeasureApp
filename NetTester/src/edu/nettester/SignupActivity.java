@@ -8,6 +8,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import edu.nettester.task.OPHTTPClient;
 import edu.nettester.util.CommonMethod;
+import edu.nettester.util.Constant;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -26,7 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class SignupActivity extends ActionBarActivity {
+public class SignupActivity extends ActionBarActivity implements Constant {
     
     private Button btn_signup;
     private EditText edit_email;
@@ -75,6 +77,8 @@ public class SignupActivity extends ActionBarActivity {
                         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(view.getContext());
                         Editor editor = sharedPref.edit();
                         editor.putString(SettingsFragment.KEY_PREF_USERNAME, CommonMethod.M_UNAME);
+                        editor.putString(PREF_MUID, CommonMethod.M_UID);
+                        editor.putString(PREF_MHASH, CommonMethod.M_HASH);
                         editor.commit();
                         
                         openSettingActivity();

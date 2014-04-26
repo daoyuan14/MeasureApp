@@ -15,10 +15,12 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -77,6 +79,14 @@ public class MainActivity extends ActionBarActivity implements Constant {
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
+        
+        /*
+         * init several global variables
+         */
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        CommonMethod.M_UNAME = sharedPref.getString(SettingsFragment.KEY_PREF_USERNAME, "Anonymous");
+        CommonMethod.M_UID = sharedPref.getString(PREF_MUID, "0");
+        CommonMethod.M_HASH = sharedPref.getString(PREF_MHASH, "");
         
         // setup action bar for tabs
         ActionBar actionBar = getSupportActionBar();
