@@ -217,6 +217,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
         public void onResume() {
             super.onResume();
             
+            displaySpinner();            
             displayViews();
         }
         
@@ -243,18 +244,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
         }
         
         private void initSpinner() {
-            ArrayList<String> arrayList1 = new ArrayList<String>(servermap.keySet());
-            
-            // Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter<String> adapter = new ArrayAdapter<String> (
-                    getActivity(), android.R.layout.simple_spinner_dropdown_item, arrayList1);
-            
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            
-            // Apply the adapter to the spinner
-            spinner.setAdapter(adapter);
-            
             spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent, View view, 
                         int position, long id) {
@@ -267,6 +256,20 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     // Another interface callback
                 }
             });
+        }
+        
+        private void displaySpinner() {
+            ArrayList<String> arrayList1 = new ArrayList<String>(servermap.keySet());
+            
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<String> adapter = new ArrayAdapter<String> (
+                    getActivity(), android.R.layout.simple_spinner_dropdown_item, arrayList1);
+            
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            
+            // Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
         }
         
         private void initButtons() {
