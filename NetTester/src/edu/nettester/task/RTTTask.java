@@ -14,6 +14,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
 
 import edu.nettester.R;
 import edu.nettester.db.MeasureContract.MeasureLog;
@@ -352,6 +353,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
             
             try {
                 AndroidHttpClient client = AndroidHttpClient.newInstance("Dalvik/1.6.0 NetTester of OneProbe Group");
+                HttpConnectionParams.setConnectionTimeout(client.getParams(), 3000);
                 for(int i=0;i<num_test;i++) {
                     int statusCode = 0;
                     long ts = System.nanoTime();
