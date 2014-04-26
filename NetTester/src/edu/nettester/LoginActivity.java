@@ -121,12 +121,10 @@ public class LoginActivity extends ActionBarActivity implements Constant {
         startActivity(intent);
     }
     
-    /**
-     * TODO
-     */
     private void openSettingActivity() {
         Intent intent = new Intent(LoginActivity.this, SettingsActivity.class);
         startActivity(intent);
+        finish();
     }
     
     @Override

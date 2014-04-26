@@ -88,12 +88,10 @@ public class SignupActivity extends ActionBarActivity implements Constant {
         });
     }
     
-    /**
-     * TODO
-     */
     private void openSettingActivity() {
         Intent intent = new Intent(SignupActivity.this, SettingsActivity.class);
         startActivity(intent);
+        finish();
     }
     
     public boolean sendSignupData(String str_email, String str_pwd) {
