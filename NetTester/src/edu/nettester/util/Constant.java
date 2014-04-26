@@ -28,4 +28,8 @@ public interface Constant {
     public static final String reg_url = "http://158.132.255.76:25001/mserver/reg_insert.php";
     
     public static final String updata_url = "http://158.132.255.76:25001/mserver/updata.php";
+    
+    public static final int Cat_RTT = 1;
+    public static final int Cat_DOWNLOAD = 2;
+    public static final int Cat_UPLOAD = 3;
 }

@@ -3,10 +3,16 @@ package edu.nettester.task;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 //import java.lang.Float;
+import java.io.BufferedInputStream;
 import java.lang.String;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 
 import edu.nettester.db.MeasureContract.MeasureLog;
@@ -22,11 +28,15 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 /**
  * One measurement task
@@ -36,10 +46,13 @@ import android.util.Log;
 public class RTTTask extends AsyncTask<String, Integer, String[]> implements Constant {
     
     private Context mContext;
-    //private AndroidHttpClient httpClient = null;
+    private TextView txt_task;
+    private ProgressBar mProgress;
     
-    public RTTTask(Context context) {
+    public RTTTask(Context context, TextView text, ProgressBar progress) {
         mContext = context;
+        txt_task = text;
+        mProgress = progress;
     }
 
     @Override
@@ -55,7 +68,10 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     	String mlocation = getLocation(mContext);
     	String deviceID = getDeviceID(mContext);
     	    	
-        //perform ping task
+        /*
+         * perform ping task
+         */
+    	publishProgress(new Integer[] {Cat_RTT, 0});
         ArrayList<Double> rtt_list = new ArrayList<Double>();
         for(int i=0;i<10;i++) {
         	HTTPPinger pingtask = new HTTPPinger(mserver);
@@ -63,8 +79,10 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         	rtt_list.add(rtt);
         	
         	//update progress
-        	
+        	publishProgress(new Integer[] {Cat_RTT, i*10});        	
         }
+        publishProgress(new Integer[] {Cat_RTT, 100});
+        
         Collections.sort(rtt_list);
         double min_rtt = rtt_list.get(0);
         double max_rtt = rtt_list.get(9);        
@@ -72,15 +90,21 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         double median_rtt = getMedian(rtt_list);
         double stdv_rtt = getStdDv(rtt_list);
         
-        //perform download throughput test
+        /*
+         * perform download throughput test
+         */
+        publishProgress(new Integer[] {Cat_DOWNLOAD, 0});
         HTTPDownTP downtask = new HTTPDownTP(mserver);
         float downtp = downtask.execute();
-        //update progress
+        publishProgress(new Integer[] {Cat_DOWNLOAD, 100});
         
-    	//perform upload throughput test
+    	/*
+    	 * perform upload throughput test
+    	 */
+        publishProgress(new Integer[] {Cat_UPLOAD, 0});
     	HTTPUpTP uptask = new HTTPUpTP(mserver);
     	float uptp = uptask.execute();
-    	//update progress
+    	publishProgress(new Integer[] {Cat_UPLOAD, 100});
     	
     	if (DEBUG) {
     		Log.d(TAG, "RTT: "+String.valueOf(median_rtt)+"ms");
@@ -99,7 +123,27 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
      */
     @Override
     protected void onProgressUpdate(Integer... progress) {
-        //TODO
+        Integer category = progress[0];
+        Integer speed = progress[1];
+        
+        txt_task.setVisibility(View.VISIBLE);
+        mProgress.setVisibility(View.VISIBLE);
+        
+        switch(category) {
+            case Cat_RTT:
+                txt_task.setText("Measuring RTT (Round Trip Time)...");
+                break;
+            case Cat_DOWNLOAD:
+                txt_task.setText("Measuring download throughput...");
+                break;
+            case Cat_UPLOAD:
+                txt_task.setText("Measuring upload throughput...");
+                break;
+            default:
+                break;
+        }
+        
+        mProgress.setProgress(speed);
     }
     
     /**
@@ -107,6 +151,8 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
      */
     @Override
     protected void onPostExecute(String[] result) {
+        txt_task.setText("Finished measurement!");
+        
         MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         
@@ -275,6 +321,92 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
         	Log.d(TAG, "Device ID:" + deviceID);
         
     	return deviceID;
+    }
+    
+    /**
+     * 
+     * @author Weichao
+     * @since 14-04-20
+     */
+    public class HTTPDownTP implements Constant {
+        private String mserver = "";
+        private int do_size[] = {350,500,750,1000,1500,2000,2500,3000,3500,4000};
+        
+        public HTTPDownTP(String in_server) {
+            this.mserver = in_server;
+        }
+        
+        public float execute() {
+            float tp = 0;
+            int num_test = do_size.length;
+            boolean success = false;
+            
+            try {
+                AndroidHttpClient client = AndroidHttpClient.newInstance("Dalvik/1.6.0 NetTester of OneProbe Group");
+                for(int i=0;i<num_test;i++) {
+                    int statusCode = 0;
+                    long ts = System.nanoTime();
+                    String base_down_url = mserver+"random"; 
+                    String down_url = base_down_url + do_size[i] + "x" + do_size[i] + ".jpg?x=" + ts;
+                    
+                    HttpGet httpGet = new HttpGet(down_url);
+                    
+                    long startTime = System.nanoTime();
+                    HttpResponse response = client.execute(httpGet);
+                    
+                    StatusLine statusLine = response.getStatusLine();
+                    if (statusLine != null) {
+                        statusCode = statusLine.getStatusCode();
+                        success = (statusCode == 200);
+                    }
+                                    
+                    if(success) {
+                        try{
+                            HttpEntity responseEntity = response.getEntity();
+                            
+                            BufferedInputStream bufferedinStrm;
+                            bufferedinStrm = new BufferedInputStream(responseEntity.getContent());                      
+                            
+                            // TO-DO  getContentLength() returns negative number if body length is unknown
+                            long downsize = responseEntity.getContentLength();
+                            
+                            byte abyte[];
+                            abyte = new byte[32768];                        
+                            long have_read = 0;
+                            long readLen;
+                            
+                            while ((readLen = bufferedinStrm.read(abyte)) > 0) {
+                                have_read += readLen;
+                            }
+                            
+                            long endTime = System.nanoTime();
+                            
+                            float duration = (endTime-startTime)/1000000;
+                            if (DEBUG)
+                                Log.d(TAG, String.valueOf(downsize)+":"+String.valueOf(have_read)+":"+String.valueOf(duration));
+                            tp = (have_read*8)/duration;
+                            
+                            if(duration > 10000) {
+                                break;
+                            }
+                            TimeUnit.MILLISECONDS.sleep(200);
+                        } catch (InterruptedException e){
+                            Log.e(TAG, e.getMessage());
+                        }
+                    } else {
+                        Log.w(TAG, "download failed");
+                    }
+                    httpGet.abort();
+                    
+                    publishProgress(new Integer[] {Cat_DOWNLOAD, i*10});
+                }
+                client.close();
+            } catch (Exception e) {  
+                Log.e(TAG, e.getMessage());
+            }
+            
+            return tp;
+        }
     }
     
     private class UploadProc extends AsyncTask<List<NameValuePair>, Void, String> {

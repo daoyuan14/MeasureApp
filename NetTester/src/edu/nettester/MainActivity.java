@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -167,8 +168,12 @@ public class MainActivity extends ActionBarActivity implements Constant {
      * @author Daoyuan
      */
     public static class MeasureFragment extends Fragment {
-        private Button btn_test;
+        
         private Spinner spinner;
+        private Button btn_test;
+        private TextView txt_task;
+        private ProgressBar mProgress;
+        
         private String target = null;
         
         @Override
@@ -180,6 +185,11 @@ public class MainActivity extends ActionBarActivity implements Constant {
             
             btn_test = (Button) rootView.findViewById(R.id.btn_test);
             spinner = (Spinner) rootView.findViewById(R.id.spinner);
+            txt_task = (TextView) rootView.findViewById(R.id.txt_task);
+            mProgress = (ProgressBar) rootView.findViewById(R.id.progressBar1);
+            
+            txt_task.setVisibility(View.INVISIBLE);
+            mProgress.setVisibility(View.INVISIBLE);
             
             initButtons();
             initSpinner();
@@ -209,8 +219,8 @@ public class MainActivity extends ActionBarActivity implements Constant {
                 public void onItemSelected(AdapterView<?> parent, View view, 
                         int position, long id) {
                     target = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getActivity(), servermap.get(target), Toast.LENGTH_SHORT)
-                         .show();
+                    if (false)
+                        Toast.makeText(getActivity(), servermap.get(target), Toast.LENGTH_SHORT).show();
                 }
 
                 public void onNothingSelected(AdapterView<?> parent) {
@@ -226,7 +236,9 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     Toast.makeText(getActivity(), "Prepare to test", Toast.LENGTH_SHORT)
                          .show();
                     
-                    new RTTTask(getActivity()).execute(target);
+                    btn_test.setEnabled(false);
+                    
+                    new RTTTask(getActivity(), txt_task, mProgress).execute(target);
                 }
             });
         }

@@ -13,15 +13,8 @@
         android:id="@+id/txt_measuretarget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="@string/txt_measuretarget" />
-
-    <Button
-        android:id="@+id/btn_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/btn_test" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -29,7 +22,35 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txt_measuretarget"
         android:layout_below="@+id/txt_measuretarget"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:prompt="@string/txt_measuretarget" />
+
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/btn_test" />
+
+    <TextView
+        android:id="@+id/txt_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner"
+        android:layout_below="@+id/btn_test"
+        android:layout_marginTop="40dp"
+        android:text="Measuring RTT (Round Trip Time)..." />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner"
+        android:layout_alignRight="@+id/spinner"
+        android:layout_below="@+id/txt_task"
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>
