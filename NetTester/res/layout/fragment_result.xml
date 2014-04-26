@@ -16,38 +16,38 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="64px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:text="TYPE" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="64px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:text="TIME" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="64px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:text="DOWN\n(Mbps)" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="64px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:text="UPLOAD\n(Mbps)" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="64px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right"
+            android:gravity="center"
             android:text="RTT\n(ms)" />
         
         <!--

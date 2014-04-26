@@ -31,22 +31,22 @@
 
     <TextView
         android:id="@+id/item2"
-        android:layout_width="wrap_content"
+        android:layout_width="64px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ellipsize="marquee"
-        android:gravity="left"
+        android:gravity="center"
         android:text="item2"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorAlertDialogListItem" />
 
     <TextView
         android:id="@+id/item3"
-        android:layout_width="wrap_content"
+        android:layout_width="64px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ellipsize="marquee"
-        android:gravity="left"
+        android:gravity="center"
         android:singleLine="true"
         android:text="item3"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -54,7 +54,7 @@
 
     <TextView
         android:id="@+id/item4"
-        android:layout_width="wrap_content"
+        android:layout_width="64px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ellipsize="marquee"
@@ -66,11 +66,11 @@
 
     <TextView
         android:id="@+id/item5"
-        android:layout_width="wrap_content"
+        android:layout_width="64px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ellipsize="marquee"
-        android:gravity="right"
+        android:gravity="center"
         android:singleLine="true"
         android:text="item5"
         android:textAppearance="?android:attr/textAppearanceSmall"
