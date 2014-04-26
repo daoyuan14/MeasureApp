@@ -233,7 +233,10 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
 	        }
         } catch (Exception e) {  
             Log.e(CommonMethod.TAG, e.getMessage());
-        }      
+        }
+        
+        db.close();
+        mDbHelper.close();
     }
     
     
