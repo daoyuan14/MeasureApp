@@ -278,6 +278,8 @@ public class MainActivity extends ActionBarActivity implements Constant {
             btn_look.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ((ActionBarActivity)getActivity()).getSupportActionBar().setSelectedNavigationItem(0);
+                    
                     isVisible = false;
                     CommonMethod.isMeasure = false;
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
