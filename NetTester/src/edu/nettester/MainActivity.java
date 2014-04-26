@@ -15,6 +15,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -267,6 +268,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     
                     isVisible = true;
                     CommonMethod.isMeasure = true;
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
                     
                     btn_test.setEnabled(false);
                     new RTTTask(getActivity(), txt_task, mProgress).execute(target);
@@ -280,6 +282,7 @@ public class MainActivity extends ActionBarActivity implements Constant {
                 public void onClick(View view) {
                     isVisible = false;
                     CommonMethod.isMeasure = false;
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                     
                     ((ActionBarActivity)getActivity()).getSupportActionBar().setSelectedNavigationItem(1);
                 }

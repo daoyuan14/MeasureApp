@@ -23,6 +23,7 @@ import edu.nettester.util.Constant;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
@@ -152,7 +153,6 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     @Override
     protected void onPostExecute(String[] result) {
         txt_task.setText("Finished measurement!");
-        CommonMethod.isMeasure = false;
         
         MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
