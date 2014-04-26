@@ -351,10 +351,14 @@ public class MainActivity extends ActionBarActivity implements Constant {
                         String value = aCursor.getString(aColumnIndex);
                         ImageView imageView = (ImageView) aView;
                         
-                        if (value.equals("WIFI"))
-                            imageView.setImageResource(R.drawable.result_ic_wifi_highlighted);
-                        else
-                            imageView.setImageResource(R.drawable.result_ic_cell_highlighted);
+                        if (value.equals("WIFI")) {
+                            imageView.setMaxHeight(64);
+                            imageView.setImageResource(R.drawable.wifi_2);
+                        }
+                        else {
+                            imageView.setMaxHeight(64);
+                            imageView.setImageResource(R.drawable.progress);
+                        }
                         
                         return true;
                     }

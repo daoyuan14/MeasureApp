@@ -83,9 +83,9 @@ public class ResultActivity extends ActionBarActivity implements Constant {
         columnIndex = cursor.getColumnIndex(MeasureLog.M_NET_INFO);
         value = cursor.getString(columnIndex);
         if (value.equals("WIFI"))
-            alog_wifi.setImageResource(R.drawable.result_ic_wifi_highlighted);
+            alog_wifi.setImageResource(R.drawable.wifi_2);
         else
-            alog_wifi.setImageResource(R.drawable.result_ic_cell_highlighted);
+            alog_wifi.setImageResource(R.drawable.progress);
         
         // time
         columnIndex = cursor.getColumnIndex(MeasureLog.MTIME);
