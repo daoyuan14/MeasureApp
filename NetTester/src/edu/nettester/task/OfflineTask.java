@@ -1,11 +1,14 @@
 package edu.nettester.task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import edu.nettester.LoginActivity;
+import edu.nettester.SettingsFragment;
 import edu.nettester.db.MeasureContract.OfflineDel;
 import edu.nettester.db.MeasureDBHelper;
 import edu.nettester.db.MofflineDBHelper;
@@ -14,16 +17,19 @@ import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
-public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Constant {
+public class OfflineTask extends AsyncTask<Void, Integer, Boolean> implements Constant {
 	private Context mContext;
     
     public OfflineTask(Context context) {
@@ -35,7 +41,7 @@ public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Const
     	OPHTTPClient mclient = new OPHTTPClient();
     	
     	//check whether there are some measurement logs deleted at the server side
-    	//TODO, show toast "Checking remote database..." 
+    	publishProgress(0);
     	
     	String[] del_ar = {};
     	String check_url = delcheck_url + "?m_uid=" + CommonMethod.M_UID + "&m_hash=" + CommonMethod.M_HASH;
@@ -64,7 +70,7 @@ public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Const
     	
 
     	//delete the unsync logs at the server side
-    	//TODO, show toast "Deleting data at the server side..." 
+    	publishProgress(1);
     	
     	String mid_str = "";
     	ArrayList<String> mid_ar = new ArrayList<String>();
@@ -121,7 +127,8 @@ public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Const
     	
     	
     	//upload the logs that haven't been successfully uploaded
-    	//TODO, show toast "Uploading data..."    	
+    	publishProgress(2);
+    	
     	MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 		
@@ -168,14 +175,49 @@ public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Const
 		mDbHelper.close();
     	mclient.destroy();
     	
-    	//TODO, update the last sync time, show toast "Measurement log sync: done!"
+    	//update the last sync time
+    	publishProgress(3);
     	
     	return true;
     }
     
     @Override
+    protected void onProgressUpdate(Integer... progress) {
+        switch (progress[0]) {
+            case 0:
+                Toast.makeText(mContext, "Checking remote database...", Toast.LENGTH_SHORT)
+                .show();
+                break;
+            case 1:
+                Toast.makeText(mContext, "Deleting data at the server side...", Toast.LENGTH_SHORT)
+                .show();
+                break;
+            case 2:
+                Toast.makeText(mContext, "Uploading data...", Toast.LENGTH_SHORT)
+                .show();
+                break;
+            case 3:
+                Toast.makeText(mContext, "Measurement log sync: done!", Toast.LENGTH_SHORT)
+                .show();
+                break;
+            default:
+                break;
+        }
+    }
+    
+    @Override
     protected void onPostExecute(Boolean result) {
-    	
+        if (result) {
+            // update preferences
+            long ts = System.currentTimeMillis();
+            SimpleDateFormat df = new SimpleDateFormat("MMM d HH:mm, yyyy");
+            String curtime = df.format(ts);
+            
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+            Editor editor = sharedPref.edit();
+            editor.putString(SettingsFragment.KEY_PREF_LASTOFFLINE, curtime);
+            editor.commit();
+        }
     }
     
     private String getDeviceID(Context mContext) {

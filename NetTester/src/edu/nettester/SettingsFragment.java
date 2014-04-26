@@ -14,6 +14,7 @@ public class SettingsFragment extends PreferenceFragment implements Constant {
     public static final String KEY_PREF_USERNAME = "pref_login_username";
     public static final String KEY_PREF_LOGOUT = "pref_logout_view";
     public static final String KEY_PREF_LASTSERVER = "pref_server_last";
+    public static final String KEY_PREF_LASTOFFLINE = "pref_offline_last";
     
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     
@@ -55,6 +56,9 @@ public class SettingsFragment extends PreferenceFragment implements Constant {
                 else if (key.equals(KEY_PREF_LASTSERVER)) {
                     pref.setSummary(sharedPreferences.getString(key, "Never"));
                 }
+                else if (key.equals(KEY_PREF_LASTOFFLINE)) {
+                    pref.setSummary(sharedPreferences.getString(key, "Never"));
+                }
             }
             
         };
@@ -89,6 +93,9 @@ public class SettingsFragment extends PreferenceFragment implements Constant {
         
         pref = findPreference(KEY_PREF_LASTSERVER);
         pref.setSummary(sharedPreferences.getString(KEY_PREF_LASTSERVER, "Never"));
+        
+        pref = findPreference(KEY_PREF_LASTOFFLINE);
+        pref.setSummary(sharedPreferences.getString(KEY_PREF_LASTOFFLINE, "Never"));
     }
 
     @Override
