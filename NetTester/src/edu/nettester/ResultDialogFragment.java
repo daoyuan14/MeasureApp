@@ -23,18 +23,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 @SuppressLint("ValidFragment")
 public class ResultDialogFragment extends DialogFragment implements Constant {
 
     private Cursor cursor;
     private Context mContext;
+    private ListView list_result;
 
-    public ResultDialogFragment(Context context, Cursor cursor) {
+    public ResultDialogFragment(Context context, Cursor cursor, ListView list) {
         super();
         this.cursor = cursor;
         this.mContext = context;
+        this.list_result = list;
     }
 
     @Override
@@ -75,9 +80,10 @@ public class ResultDialogFragment extends DialogFragment implements Constant {
                                 	//delete the data of Anonymous user directly
                                 	mDbHelper.deleteOneRow(cursor);
                                 }
-                                
-                                //TODO, update the result activity
                                 mDbHelper.close();
+                                
+                                ((SimpleCursorAdapter)((BaseAdapter) list_result.getAdapter())).notifyDataSetChanged();
+                                
                                 break;
                                 
                             case 1: //Show
