@@ -33,7 +33,13 @@
     <string name="pref_server_dialog_title">Sync server list</string>
     <string name="pref_server_dialog_summary">Click to sync measurement server list</string>
     <string name="pref_server_last_title">Last sync time</string>
-    <string name="pref_server_last_summary">Apr 21, 2014</string>
+    <string name="pref_server_last_summary">Never</string>
+    
+    <string name="pref_offline_title">Offline logs</string>
+    <string name="pref_offline_dialog_title">Sync offline logs</string>
+    <string name="pref_offline_dialog_summary">Click to sync offline measurement logs</string>
+    <string name="pref_offline_last_title">Last sync time</string>
+    <string name="pref_offline_last_summary">Never</string>
     
     <string name="pref_about_title">About</string>
     <string name="pref_about_intro_title">App about</string>

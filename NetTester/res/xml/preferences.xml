@@ -31,6 +31,19 @@
     </PreferenceCategory>
     
     <PreferenceCategory
+        android:key="pref_offline"
+        android:title="@string/pref_offline_title">
+        <edu.nettester.OfflineSyncPreference
+            android:key="pref_offline_dialog"
+            android:title="@string/pref_offline_dialog_title"
+            android:summary="@string/pref_offline_dialog_summary" />
+        <Preference 
+            android:key="pref_offline_last"
+            android:title="@string/pref_offline_last_title"
+            android:summary="@string/pref_offline_last_summary" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory
         android:key="pref_about"
         android:title="@string/pref_about_title">
         <Preference 
