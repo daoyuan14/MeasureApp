@@ -13,6 +13,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
 
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
@@ -38,7 +39,7 @@ public class HTTPUpTP implements Constant {
 		try {
 			String up_url = this.mserver+"upload.php";
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Dalvik/1.6.0 NetTester of OneProbe Group");
-			
+			HttpConnectionParams.setConnectionTimeout(client.getParams(), 3000);
 			String p = prepare_str(250000);
 			
 			for(int i=0;i<1;i++) {
