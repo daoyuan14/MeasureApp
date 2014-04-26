@@ -28,6 +28,8 @@
     <string name="pref_login_view_default">Click to login your NetTester account</string>
     <string name="pref_login_username_title">Your user name</string>
     <string name="pref_login_username_default">Anonymous</string>
+    <string name="pref_logout_view_title">Logout account</string>
+    <string name="pref_logout_view_default">Click to logout your NetTester account</string>
     
     <string name="pref_server_title">Server List</string>
     <string name="pref_server_dialog_title">Sync server list</string>

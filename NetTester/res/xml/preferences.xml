@@ -15,6 +15,10 @@
             android:title="@string/pref_login_username_title"
             android:summary="@string/pref_login_username_default"
             android:defaultValue="0" />
+        <edu.nettester.LogoutDialog 
+            android:key="pref_logout_view"
+            android:title="@string/pref_logout_view_title"
+            android:summary="@string/pref_logout_view_default" />
     </PreferenceCategory>
     
     <PreferenceCategory

@@ -10,8 +10,9 @@ import android.util.Log;
 
 public class SettingsFragment extends PreferenceFragment implements Constant {
     
+    public static final String KEY_PREF_LOGIN = "pref_login_view";
     public static final String KEY_PREF_USERNAME = "pref_login_username";
-    
+    public static final String KEY_PREF_LOGOUT = "pref_logout_view";
     public static final String KEY_PREF_LASTSERVER = "pref_server_last";
     
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
@@ -33,13 +34,26 @@ public class SettingsFragment extends PreferenceFragment implements Constant {
                 if (DEBUG)
                     Log.d(TAG, "Enter onSharedPreferenceChanged "+key);
                 
-                Preference userPref = findPreference(key);
+                Preference pref = findPreference(key);
 
                 if (key.equals(KEY_PREF_USERNAME)) {
-                    userPref.setSummary(sharedPreferences.getString(key, "Anonymous"));
+                    String username = sharedPreferences.getString(KEY_PREF_USERNAME, "Anonymous");
+                    pref.setSummary(username);
+                    
+                    if (username.equals("Anonymous")) {
+                        pref = findPreference(KEY_PREF_LOGOUT);
+                        pref.setEnabled(false);
+                        pref = findPreference(KEY_PREF_LOGIN);
+                        pref.setEnabled(true);
+                    } else {
+                        pref = findPreference(KEY_PREF_LOGIN);
+                        pref.setEnabled(false);
+                        pref = findPreference(KEY_PREF_LOGOUT);
+                        pref.setEnabled(true);
+                    }
                 }
                 else if (key.equals(KEY_PREF_LASTSERVER)) {
-                    userPref.setSummary(sharedPreferences.getString(key, "Never"));
+                    pref.setSummary(sharedPreferences.getString(key, "Never"));
                 }
             }
             
@@ -57,11 +71,24 @@ public class SettingsFragment extends PreferenceFragment implements Constant {
         
         // init updates
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
-        Preference userPref = findPreference(KEY_PREF_USERNAME);
-        userPref.setSummary(sharedPreferences.getString(KEY_PREF_USERNAME, "Anonymous"));
+        Preference pref = findPreference(KEY_PREF_USERNAME);
+        String username = sharedPreferences.getString(KEY_PREF_USERNAME, "Anonymous");
+        pref.setSummary(username);
         
-        userPref = findPreference(KEY_PREF_LASTSERVER);
-        userPref.setSummary(sharedPreferences.getString(KEY_PREF_LASTSERVER, "Never"));
+        if (username.equals("Anonymous")) {
+            pref = findPreference(KEY_PREF_LOGOUT);
+            pref.setEnabled(false);
+            pref = findPreference(KEY_PREF_LOGIN);
+            pref.setEnabled(true);
+        } else {
+            pref = findPreference(KEY_PREF_LOGIN);
+            pref.setEnabled(false);
+            pref = findPreference(KEY_PREF_LOGOUT);
+            pref.setEnabled(true);
+        }
+        
+        pref = findPreference(KEY_PREF_LASTSERVER);
+        pref.setSummary(sharedPreferences.getString(KEY_PREF_LASTSERVER, "Never"));
     }
 
     @Override
