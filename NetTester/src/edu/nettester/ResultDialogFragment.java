@@ -1,18 +1,31 @@
 package edu.nettester;
 
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import edu.nettester.db.MeasureContract.OfflineDel;
 import edu.nettester.db.MeasureDBHelper;
+import edu.nettester.db.MeasureContract.MeasureLog;
+import edu.nettester.db.MofflineDBHelper;
+import edu.nettester.task.OPHTTPClient;
+import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
+@SuppressLint("ValidFragment")
 public class ResultDialogFragment extends DialogFragment implements Constant {
 
     private Cursor cursor;
@@ -36,7 +49,35 @@ public class ResultDialogFragment extends DialogFragment implements Constant {
                             case 0: //Delete
                                 if (DEBUG) Log.d(TAG, "0");
                                 MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
-                                mDbHelper.deleteOneRow(cursor);
+                                long c_id = mDbHelper.fetchKeyId(cursor);
+                                Cursor cur = mDbHelper.fetchOneRow(c_id);
+                                cur.moveToFirst();
+                                int cindex = cur.getColumnIndex(MeasureLog.MID);
+                                String c_mid = cur.getString(cindex);
+                                int cindex2 = cur.getColumnIndex(MeasureLog.MUID);
+                                String c_muid = cur.getString(cindex2);
+                                
+                                if(CommonMethod.M_UID.equals(c_muid)) {
+	                                //insert the deleted record to the OfflineDB
+	                                MofflineDBHelper mOffline = new MofflineDBHelper(mContext);
+	                                SQLiteDatabase db = mOffline.getWritableDatabase();
+	                                ContentValues values = new ContentValues();
+	                                values.put(OfflineDel.MUID, CommonMethod.M_UID);
+	                                values.put(OfflineDel.MID, c_mid);
+	                                long newRowId = db.insert(OfflineDel.TABLE_NAME, null, values);
+	                                if (DEBUG)
+	                                    Log.d(TAG, "Insert to OfflineDB, row: "+newRowId);
+	                                
+	                                //delete the record in the original database
+	                                mDbHelper.deleteOneRow(cursor);
+	                                mOffline.close();
+                                } else if(c_muid.equals("0")) {
+                                	//delete the data of Anonymous user directly
+                                	mDbHelper.deleteOneRow(cursor);
+                                }
+                                
+                                //TODO, update the result activity
+                                mDbHelper.close();
                                 break;
                                 
                             case 1: //Show
@@ -68,6 +109,28 @@ public class ResultDialogFragment extends DialogFragment implements Constant {
             Log.d(TAG, "sent keyid: "+keyid);
         
         startActivity(intent);
+    }
+    
+    private class DelSync extends AsyncTask<List<NameValuePair>, Void, String> {
+    	@Override
+		protected String doInBackground(List<NameValuePair>...params) {
+    		String output = "";
+    		        	
+        	OPHTTPClient mclient = new OPHTTPClient();
+        	output = mclient.postPage(CommonMethod.deldata_url, params[0]);
+        	
+        	if (CommonMethod.DEBUG)
+        		Log.d(CommonMethod.TAG, output);
+        	
+        	mclient.destroy();
+        	
+    		return output;
+    	}
+    	
+    	@Override
+        protected void onPostExecute(String result) {
+    		
+    	}
     }
 
 }
