@@ -29,6 +29,8 @@ public class CommonMethod implements Constant {
     public static String M_UNAME;
     public static String M_HASH;
     
+    public static boolean isMeasure = false;
+    
     private static void readServerList(BufferedReader br) throws IOException {
         //BufferedReader br = new BufferedReader(new InputStreamReader(is));
         

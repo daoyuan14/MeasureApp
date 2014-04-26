@@ -143,6 +143,8 @@ public class MainActivity extends ActionBarActivity implements Constant {
         
         int i = getSupportActionBar().getSelectedNavigationIndex();
         outState.putInt(selectedTab, i);
+        if (DEBUG)
+            Log.d(TAG, "Save tab index: "+i);
         
         if (DEBUG)
             Log.d(TAG, "exit MainActivity: onSaveInstanceState");
@@ -173,8 +175,11 @@ public class MainActivity extends ActionBarActivity implements Constant {
         private Button btn_test;
         private TextView txt_task;
         private ProgressBar mProgress;
+        private Button btn_look;
         
         private String target = null;
+        
+        boolean isVisible = false;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -187,14 +192,38 @@ public class MainActivity extends ActionBarActivity implements Constant {
             spinner = (Spinner) rootView.findViewById(R.id.spinner);
             txt_task = (TextView) rootView.findViewById(R.id.txt_task);
             mProgress = (ProgressBar) rootView.findViewById(R.id.progressBar1);
+            btn_look = (Button) rootView.findViewById(R.id.btn_look);
             
-            txt_task.setVisibility(View.INVISIBLE);
-            mProgress.setVisibility(View.INVISIBLE);
+            displayViews();
             
             initButtons();
             initSpinner();
             
             return rootView;
+        }
+        
+        @Override
+        public void onResume() {
+            super.onResume();
+            
+            displayViews();
+        }
+        
+        private void displayViews() {
+            if (isVisible) {
+                txt_task.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.VISIBLE);
+                btn_look.setVisibility(View.VISIBLE);
+                
+                btn_test.setEnabled(false);
+                
+            } else {
+                txt_task.setVisibility(View.INVISIBLE);
+                mProgress.setVisibility(View.INVISIBLE);
+                btn_look.setVisibility(View.INVISIBLE);
+                
+                btn_test.setEnabled(true);
+            }
         }
         
         @Override
@@ -236,9 +265,23 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     Toast.makeText(getActivity(), "Prepare to test", Toast.LENGTH_SHORT)
                          .show();
                     
-                    btn_test.setEnabled(false);
+                    isVisible = true;
+                    CommonMethod.isMeasure = true;
                     
+                    btn_test.setEnabled(false);
                     new RTTTask(getActivity(), txt_task, mProgress).execute(target);
+                    
+                    btn_look.setVisibility(View.VISIBLE);
+                }
+            });
+            
+            btn_look.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isVisible = false;
+                    CommonMethod.isMeasure = false;
+                    
+                    ((ActionBarActivity)getActivity()).getSupportActionBar().setSelectedNavigationItem(1);
                 }
             });
         }
@@ -379,7 +422,10 @@ public class MainActivity extends ActionBarActivity implements Constant {
        }
 
         @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {            
+        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+            if (CommonMethod.isMeasure)
+                return;
+            
             // Check if the fragment is already initialized
             if (mFragment == null) {
                 // If not, instantiate and add it to the activity
@@ -393,6 +439,9 @@ public class MainActivity extends ActionBarActivity implements Constant {
 
         @Override
         public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+            if (CommonMethod.isMeasure)
+                return;
+            
             if (mFragment != null) {
                 // Detach the fragment, because another one is being attached
                 ft.detach(mFragment);

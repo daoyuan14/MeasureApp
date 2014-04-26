@@ -32,4 +32,5 @@ public interface Constant {
     public static final int Cat_RTT = 1;
     public static final int Cat_DOWNLOAD = 2;
     public static final int Cat_UPLOAD = 3;
+    
 }

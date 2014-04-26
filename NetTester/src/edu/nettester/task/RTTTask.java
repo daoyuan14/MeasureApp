@@ -15,6 +15,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 
+import edu.nettester.R;
 import edu.nettester.db.MeasureContract.MeasureLog;
 import edu.nettester.db.MeasureDBHelper;
 import edu.nettester.util.CommonMethod;
@@ -111,7 +112,6 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     		Log.d(TAG, "Down TP: "+String.valueOf(downtp)+"kbps");
     		Log.d(TAG, "Up TP: "+String.valueOf(uptp)+"kbps");
     	}
-    		
         
         return new String[] {mid, deviceID, mnetwork, mlocation, mserver, String.valueOf(avg_rtt), 
         		String.valueOf(median_rtt), String.valueOf(min_rtt), String.valueOf(max_rtt), 
@@ -152,6 +152,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
     @Override
     protected void onPostExecute(String[] result) {
         txt_task.setText("Finished measurement!");
+        CommonMethod.isMeasure = false;
         
         MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -226,8 +227,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
 	        }
         } catch (Exception e) {  
             Log.e(CommonMethod.TAG, e.getMessage());
-        }
-        
+        }      
     }
     
     
@@ -398,7 +398,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
                     }
                     httpGet.abort();
                     
-                    publishProgress(new Integer[] {Cat_DOWNLOAD, i*10});
+                    publishProgress(new Integer[] {Cat_DOWNLOAD, i*(100/num_test)});
                 }
                 client.close();
             } catch (Exception e) {  

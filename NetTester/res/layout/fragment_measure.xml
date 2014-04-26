@@ -27,7 +27,7 @@
 
     <Button
         android:id="@+id/btn_test"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinner"
         android:layout_centerHorizontal="true"
@@ -52,5 +52,15 @@
         android:layout_alignRight="@+id/spinner"
         android:layout_below="@+id/txt_task"
         android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/btn_look"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_test"
+        android:layout_alignRight="@+id/btn_test"
+        android:layout_below="@+id/progressBar1"
+        android:layout_marginTop="40dp"
+        android:text="Look Result" />
 
 </RelativeLayout>
