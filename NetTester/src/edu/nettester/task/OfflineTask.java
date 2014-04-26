@@ -1,7 +1,6 @@
 package edu.nettester.task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -13,10 +12,14 @@ import edu.nettester.db.MofflineDBHelper;
 import edu.nettester.db.MeasureContract.MeasureLog;
 import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,6 +35,8 @@ public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Const
     	OPHTTPClient mclient = new OPHTTPClient();
     	
     	//check whether there are some measurement logs deleted at the server side
+    	//TODO, show toast "Checking remote database..." 
+    	
     	String[] del_ar = {};
     	String check_url = delcheck_url + "?m_uid=" + CommonMethod.M_UID + "&m_hash=" + CommonMethod.M_HASH;
     	String check_output = mclient.getPage(check_url);
@@ -59,6 +64,8 @@ public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Const
     	
 
     	//delete the unsync logs at the server side
+    	//TODO, show toast "Deleting data at the server side..." 
+    	
     	String mid_str = "";
     	ArrayList<String> mid_ar = new ArrayList<String>();
     	MofflineDBHelper mOffline = new MofflineDBHelper(mContext);
@@ -114,10 +121,55 @@ public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Const
     	
     	
     	//upload the logs that haven't been successfully uploaded
-    	
-    	
-    	
+    	//TODO, show toast "Uploading data..."    	
+    	MeasureDBHelper mDbHelper = new MeasureDBHelper(mContext);
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		
+		Cursor mcur = db.query(MeasureLog.TABLE_NAME, null, MeasureLog.UPFLG + "=?", new String[] {"0"}, null, null, null);
+		boolean mh_rec = mcur.moveToFirst();
+		while(mh_rec) {
+			long q_id = mcur.getInt(0);
+			String q_muid = mcur.getString(2);
+			if(q_muid.equals(CommonMethod.M_UID) || q_muid.equals("0")) {
+				List<NameValuePair> DataList = new ArrayList<NameValuePair>();
+				DataList.add(new BasicNameValuePair(MeasureLog.MUID, CommonMethod.M_UID));
+		        DataList.add(new BasicNameValuePair(MeasureLog.MHASH, CommonMethod.M_HASH));
+		        DataList.add(new BasicNameValuePair(MeasureLog.MID, mcur.getString(3)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.M_NET_INFO, mcur.getString(5)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.M_LOC_INFO, mcur.getString(6)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.M_TAR_SERVER, mcur.getString(7)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.M_DEVID, getDeviceID(mContext)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.AVG_RTT, mcur.getString(8)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.MEDIAN_RTT, mcur.getString(9)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.MAX_RTT, mcur.getString(11)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.MIN_RTT, mcur.getString(10)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.STDV_RTT, mcur.getString(12)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.UP_TP, mcur.getString(13)));
+		        DataList.add(new BasicNameValuePair(MeasureLog.DOWN_TP, mcur.getString(14)));
+		        
+		        String q_output = mclient.postPage(updata_url, DataList);
+		        
+		        //update database
+		        if(q_output.equals("success") || q_output.equals("exist")) {
+		        	ContentValues upvalues = new ContentValues();
+		        	upvalues.put(MeasureLog.UPFLG, "1");
+		        	db.update(MeasureLog.TABLE_NAME, upvalues, MeasureLog._ID+"=?", new String[]{String.valueOf(q_id)});
+		        }
+			}
+			
+			if(mcur.isLast()) {
+    			break;
+    		} else {
+    			mcur.moveToNext();
+    		}
+		}
+		
+		db.close();
+		mDbHelper.close();
     	mclient.destroy();
+    	
+    	//TODO, update the last sync time, show toast "Measurement log sync: done!"
+    	
     	return true;
     }
     
@@ -125,5 +177,22 @@ public class OfflineTask extends AsyncTask<Void, Void, Boolean> implements Const
     protected void onPostExecute(Boolean result) {
     	
     }
-
+    
+    private String getDeviceID(Context mContext) {
+    	String deviceID = "NA";
+    	TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+    	
+    	String deviceId = telephonyManager.getDeviceId();  // This ID is permanent to a physical phone.
+        // "generic" means the emulator.
+    	
+        if (deviceId == null || Build.DEVICE.equals("generic")) {
+        	// This ID changes on OS reinstall/factory reset.
+        	deviceId = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
+        }
+    	
+        if (DEBUG)
+        	Log.d(TAG, "Device ID:" + deviceID);
+        
+    	return deviceID;
+    }
 }
