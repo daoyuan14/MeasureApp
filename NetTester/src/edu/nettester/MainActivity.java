@@ -205,8 +205,6 @@ public class MainActivity extends ActionBarActivity implements Constant {
             mProgress = (ProgressBar) rootView.findViewById(R.id.progressBar1);
             btn_look = (Button) rootView.findViewById(R.id.btn_look);
             
-            displayViews();
-            
             initButtons();
             initSpinner();
             
