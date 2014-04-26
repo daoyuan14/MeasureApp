@@ -440,7 +440,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
                 HttpConnectionParams.setConnectionTimeout(client.getParams(), 3000);
                 String p = prepare_str(250000);
                 
-                for(int i=0;i<7;i++) {
+                for(int i=0;i<5;i++) {
                     int statusCode = 0;
                     //long ts = System.nanoTime();
                     long upsize = p.length();
@@ -503,7 +503,7 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
                     //p = generateNewStr(p, 2^(i+1));
                     p = generateNewStr(p, 2);
                     
-                    publishProgress(new Integer[] {Cat_UPLOAD, i*(100/7)});
+                    publishProgress(new Integer[] {Cat_UPLOAD, i*(100/5)});
                 }
                 
                 client.close();
