@@ -1,6 +1,7 @@
 package edu.nettester.db;
 
 import edu.nettester.db.MeasureContract.MeasureLog;
+import edu.nettester.util.CommonMethod;
 import edu.nettester.util.Constant;
 
 import android.content.Context;
@@ -63,8 +64,8 @@ public class MeasureDBHelper extends SQLiteOpenHelper implements Constant {
         Cursor cur = db.query(
                 MeasureLog.TABLE_NAME,  // The table to query
                 null,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                                   // The values for the WHERE clause
+                MeasureLog.MUID + "=? OR " + MeasureLog.MUID + "=?",                                // The columns for the WHERE clause
+                new String[] {CommonMethod.M_UID, "0"},                                   // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
                 null                                 // The sort order
