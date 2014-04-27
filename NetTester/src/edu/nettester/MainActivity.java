@@ -398,7 +398,9 @@ public class MainActivity extends ActionBarActivity implements Constant {
                     // Get the cursor, positioned to the corresponding row in the result set
                     Cursor cursor = (Cursor) list_result.getItemAtPosition(position);
                     
-                    new ResultDialogFragment(getActivity(), cursor, list_result).show(getActivity().getSupportFragmentManager(), "ResultDialog");
+                    ActionBar actionbar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+                    
+                    new ResultDialogFragment(getActivity(), cursor, actionbar).show(getActivity().getSupportFragmentManager(), "ResultDialog");
                 }
             });
         }

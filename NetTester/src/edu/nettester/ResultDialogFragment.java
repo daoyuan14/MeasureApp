@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -33,13 +34,13 @@ public class ResultDialogFragment extends DialogFragment implements Constant {
 
     private Cursor cursor;
     private Context mContext;
-    private ListView list_result;
+    private ActionBar actionbar;
 
-    public ResultDialogFragment(Context context, Cursor cursor, ListView list) {
+    public ResultDialogFragment(Context context, Cursor cursor, ActionBar actionbar) {
         super();
         this.cursor = cursor;
         this.mContext = context;
-        this.list_result = list;
+        this.actionbar = actionbar;
     }
 
     @Override
@@ -82,7 +83,9 @@ public class ResultDialogFragment extends DialogFragment implements Constant {
                                 }
                                 mDbHelper.close();
                                 
-                                ((SimpleCursorAdapter)((BaseAdapter) list_result.getAdapter())).notifyDataSetChanged();
+                                //((SimpleCursorAdapter)((BaseAdapter) list_result.getAdapter())).notifyDataSetChanged();
+                                actionbar.setSelectedNavigationItem(0);
+                                actionbar.setSelectedNavigationItem(1);
                                 
                                 break;
                                 
