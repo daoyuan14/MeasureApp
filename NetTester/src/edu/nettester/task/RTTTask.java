@@ -305,12 +305,15 @@ public class RTTTask extends AsyncTask<String, Integer, String[]> implements Con
 		
 		if (providerName != null) {
 			Location location = lm.getLastKnownLocation(providerName);
-            Log.i(TAG, "-------"+location);
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            outloc = String.valueOf(longitude) + "," + String.valueOf(latitude);
+			if (location != null) {
+			    Log.i(TAG, "-------"+location);
+	            double latitude = location.getLatitude();
+	            double longitude = location.getLongitude();
+	            outloc = String.valueOf(longitude) + "," + String.valueOf(latitude);
+			} else
+			    outloc = "Unknown place";
         } else {
-        	outloc = "Unknow place";
+        	outloc = "Unknown place";
         }
 		if (DEBUG)
         	Log.d(TAG, "Location:" + outloc);
