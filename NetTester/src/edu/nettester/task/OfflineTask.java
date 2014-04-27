@@ -49,8 +49,8 @@ public class OfflineTask extends AsyncTask<Void, Integer, Boolean> implements Co
     	if(DEBUG) Log.d(TAG, check_output);
     	
     	if(check_output.equals("nouser")) {
-    		Toast.makeText(mContext, "No such user", Toast.LENGTH_SHORT).show();
     		if(DEBUG) Log.d(TAG, "No such user");
+    		publishProgress(4);
     	} else if(!check_output.equals("nodata")){
     		del_ar = check_output.split(",");
     	}
@@ -200,7 +200,11 @@ public class OfflineTask extends AsyncTask<Void, Integer, Boolean> implements Co
                 Toast.makeText(mContext, "Measurement log sync: done!", Toast.LENGTH_SHORT)
                 .show();
                 break;
+            case 4:
+                Toast.makeText(mContext, "No such user", Toast.LENGTH_SHORT).show();
+                break;
             default:
+                Toast.makeText(mContext, "No such user", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
