@@ -98,7 +98,7 @@ public class ResultActivity extends ActionBarActivity implements Constant {
         if (value.equals("0"))
             alog_muid.setText(R.string.pref_login_username_default);
         else
-            alog_muid.setText(value);
+            alog_muid.setText(CommonMethod.M_UNAME);
         
         // target server
         columnIndex = cursor.getColumnIndex(MeasureLog.M_TAR_SERVER);

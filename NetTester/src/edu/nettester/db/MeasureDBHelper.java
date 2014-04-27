@@ -68,7 +68,7 @@ public class MeasureDBHelper extends SQLiteOpenHelper implements Constant {
                 new String[] {CommonMethod.M_UID, "0"},                                   // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
-                null                                 // The sort order
+                MeasureLog.MID + " DESC"                                 // The sort order
                 );
         
         return cur;
